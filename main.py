@@ -1,56 +1,76 @@
-##Author: Teenie Flood, Marian Sankay, Pipatporn Chaluthong, Fhaungfha Suvannakajorn 
+##Author: Teenie Flood, Pipatporn Chaluthong, Fhaungfha Suvannakajorn 
 
-def phq9():
+import csv
+import sys
+
+def read_file(questions_filename):
     """
-    This 
+    Reads questions from a CSV file and returns them as a list.
     """
-    print("Patient Health Questionnaire-9(PHQ-9)")
-    print("How often have they been bothered by the following over the past 2 weeks?")
+    try:
+        dass21_list = []
+        with open(questions_filename, newline="") as file:
+            reader = csv.reader(file)
+            for row in reader:
+                dass21_list.append(row[0])  # Assuming each question is in the first column of each row
+        return dass21_list
+    except FileNotFoundError:
+        print("Could not find " + questions_filename + " file.")
+        sys.exit()
 
-    # PHQ-9 questions
-    questions = ["Little interest or pleasure in doing things?",
-                 "Feeling down, depressed, or hopeless?",
-                 "Trouble falling or staying asleep, or sleeping too much?",
-                 "Feeling tired or having little energy?",
-                 "Poor appetite or overeating?",
-                 "Feeling bad about yourself - or that you are a failure or have let yourself or your family down?",
-                 "Trouble concentrating on things, such as reading the newspaper or watching television?",
-                 "Moving or speaking so slowly that other people could have noticed? Or so fidgety or restless that you have been moving a lot more than usual?",
-                 "Thoughts that you would be better off dead, or thoughts of hurting yourself in some way?"]
-
-    scores = []  # To store the scores of each question
-
-    print("Please answer the following questions by entering the number corresponding to your response:")
-    print("0: Not at all")
-    print("1: Several days")
-    print("2: More than half the days")
-    print("3: Nearly every day")
-
+def display_questions_and_collect_responses(questions):
+    responses = []
+    print("Please rate how much each statement applied to you over the past week:")
+    
     for question in questions:
-        response = int(input(question + " "))
-        if response in [0, 1, 2, 3]:
-            scores.append(response)
-        else:
-            print("Invalid input. Please enter a number between 0 and 3.")
+        while True:
+            response = input(question + " ")  
+            if response.isdigit() and 0 <= int(response) <= 3:
+                responses.append(int(response))
+                break
+            else:
+                print("Invalid input. Please enter a number between 0 and 3.")
+    return responses
 
-    total_score = sum(scores)
+def calculate_dass_scores(responses):
+    depression_indices = [3, 5, 10, 13, 16, 17, 20]
+    anxiety_indices = [2, 4, 7, 9, 15, 18, 21]
+    stress_indices = [0, 6, 8, 11, 12, 14, 19]
 
-    print("\nYour PHQ-9 score is:", total_score)
+    depression_score = sum([responses[i] for i in depression_indices]) * 2
+    anxiety_score = sum([responses[i] for i in anxiety_indices]) * 2
+    stress_score = sum([responses[i] for i in stress_indices]) * 2
 
-    # Interpretation (This can vary; consult appropriate health care providers for a clinical interpretation)
-    if total_score >= 20:
-        print("Your score suggests severe depression.")
-    elif total_score >= 15:
-        print("Your score suggests moderately severe depression.")
-    elif total_score >= 10:
-        print("Your score suggests moderate depression.")
-    elif total_score >= 5:
-        print("Your score suggests mild depression.")
-    else:
-        print("Your score suggests minimal depression.")
+    return depression_score, anxiety_score, stress_score
 
-    print("Please note that this tool is not a diagnostic tool. Consult a healthcare provider for a thorough assessment.")
+def interpret_scores(score, category):
+    cutoffs = {
+        'Depression': [9, 13, 20, 27],
+        'Anxiety': [7, 9, 14, 19],
+        'Stress': [14, 18, 25, 33]
+    }
+    labels = ['Normal', 'Mild', 'Moderate', 'Severe', 'Extremely Severe']
+    
+    for i, cutoff in enumerate(cutoffs[category]):
+        if score <= cutoff:
+            return labels[i]
+    return labels[-1]
+
+def main():
+    print("Welcome to the DASS-21 Self-report Questionnaire.")
+    questions_filename = "dass21questionnaires.csv"
+    dass21_list = read_file(questions_filename)
+    
+    responses = display_questions_and_collect_responses(questions_filename)
+    
+    depression_score, anxiety_score, stress_score = calculate_dass_scores(responses)
+    
+    print("\nYour Scores:")
+    print(f"Depression: {depression_score} ({interpret_scores(depression_score, 'Depression')})")
+    print(f"Anxiety: {anxiety_score} ({interpret_scores(anxiety_score, 'Anxiety')})")
+    print(f"Stress: {stress_score} ({interpret_scores(stress_score, 'Stress')})")
+    
+    print("\nPlease remember, this tool is not a diagnostic tool. If you are concerned about your mental health, please seek professional advice.")
 
 if __name__ == "__main__":
-    phq9()
-
+    main()
