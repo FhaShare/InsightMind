@@ -3,43 +3,59 @@
 import csv
 import sys
 
-def read_file(questions_filename):
+FILENAME = "dass21questionnaires.csv"
+
+def read_file():
     """
     Reads questions from a CSV file and returns them as a list.
     """
     try:
         dass21_list = []
-        with open(questions_filename, newline="") as file:
+        with open(FILENAME, newline="") as file:
             reader = csv.reader(file)
             for row in reader:
-                dass21_list.append(row[0])  # Assuming each question is in the first column of each row
+                dass21_list.append(row) 
         return dass21_list
     except FileNotFoundError:
-        print("Could not find " + questions_filename + " file.")
+        print("Could not find " + FILENAME + " file.")
         sys.exit()
 
-def display_questions_and_collect_responses(questions):
+def display_questions_and_collect_responses(dass21_list):
+    
+    if len(dass21_list) == 0:
+        print("There is no contact in the list.")
+        
     responses = []
     print("Please rate how much each statement applied to you over the past week:")
     
-    for question in questions:
+    
+    i = 1
+    for row in dass21_list:
+        print(str(i) + ". " + row[0])
+        i += 1 
+        print("\t3 - Applied to me very much, or most of the time - ALMOST ALWAYS")
+        print("\t2 - Applied to me to a considerable degree, or a good part of time - OFTEN")
+        print("\t1 - Applied to me to some degree, or some of the time - SOMETIMES")
+        print("\t0 - Did not apply to me at all - NEVER")
         while True:
-            response = input(question + " ")  
+            response = input("Answer:")
+            print(" ")
             if response.isdigit() and 0 <= int(response) <= 3:
                 responses.append(int(response))
-                break
+                break  # This should be inside the if condition
             else:
                 print("Invalid input. Please enter a number between 0 and 3.")
+            
     return responses
 
 def calculate_dass_scores(responses):
-    depression_indices = [3, 5, 10, 13, 16, 17, 20]
-    anxiety_indices = [2, 4, 7, 9, 15, 18, 21]
-    stress_indices = [0, 6, 8, 11, 12, 14, 19]
+    depression_indices = [2, 4, 9, 12, 15, 16, 20]
+    anxiety_indices = [1, 3, 6, 8, 14, 18, 19]
+    stress_indices = [0, 5, 7, 10, 11, 13, 17]
 
-    depression_score = sum([responses[i] for i in depression_indices]) * 2
-    anxiety_score = sum([responses[i] for i in anxiety_indices]) * 2
-    stress_score = sum([responses[i] for i in stress_indices]) * 2
+    depression_score = sum([responses[i] for i in depression_indices])
+    anxiety_score = sum([responses[i] for i in anxiety_indices])
+    stress_score = sum([responses[i] for i in stress_indices])
 
     return depression_score, anxiety_score, stress_score
 
@@ -58,10 +74,10 @@ def interpret_scores(score, category):
 
 def main():
     print("Welcome to the DASS-21 Self-report Questionnaire.")
-    questions_filename = "dass21questionnaires.csv"
-    dass21_list = read_file(questions_filename)
     
-    responses = display_questions_and_collect_responses(questions_filename)
+    dass21_list = read_file()
+    
+    responses = display_questions_and_collect_responses(dass21_list)
     
     depression_score, anxiety_score, stress_score = calculate_dass_scores(responses)
     
