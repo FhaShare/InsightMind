@@ -9,7 +9,7 @@ def main():
 
     #Image loading
     # image1 = pygame.image.load("images/filename.png")
-    main_menu = pygame.image.load("images/Main Menu.png")
+    main_menu = pygame.image.load("pygame/MainMenu.png")
 
 
     running = True
