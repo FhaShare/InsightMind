@@ -53,9 +53,9 @@ def calculate_dass_scores(responses):
     anxiety_indices = [1, 3, 6, 8, 14, 18, 19]
     stress_indices = [0, 5, 7, 10, 11, 13, 17]
 
-    depression_score = sum([responses[i] for i in depression_indices])
-    anxiety_score = sum([responses[i] for i in anxiety_indices])
-    stress_score = sum([responses[i] for i in stress_indices])
+    depression_score = (sum([responses[i] for i in depression_indices])) * 2
+    anxiety_score = (sum([responses[i] for i in anxiety_indices])) * 2
+    stress_score = (sum([responses[i] for i in stress_indices])) * 2
 
     return depression_score, anxiety_score, stress_score
 
