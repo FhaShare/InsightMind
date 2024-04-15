@@ -19,19 +19,19 @@ def main_menu():
         sys.exit()
     return filename, version
 
-def read_file():
+def read_file(filename):
     """
     Reads questions from a CSV file and returns them as a list.
     """
     try:
-        dass21_list = []
-        with open(FILENAME, newline="") as file:
+        questions_list = []
+        with open(filename, newline="") as file:
             reader = csv.reader(file)
             for row in reader:
-                dass21_list.append(row) 
-        return dass21_list
+                questions_list.append(row) 
+        return questions_list
     except FileNotFoundError:
-        print("Could not find " + FILENAME + " file.")
+        print("Could not find " + filename + " file.")
         sys.exit()
 
 def display_questions_and_collect_responses(questions_list):
@@ -61,18 +61,18 @@ def display_questions_and_collect_responses(questions_list):
 def calculate_dass_scores(responses, version):
     if version == 'DASS-21':
         # Indices for DASS-21
-        depression_indices = [2, 4, 9, 12, 15, 16, 20]
-        anxiety_indices = [1, 3, 6, 8, 14, 18, 19]
-        stress_indices = [0, 5, 7, 10, 11, 13, 17]
+        depression_indices = [3, 5, 10, 13, 16, 17, 21]
+        anxiety_indices = [2, 4, 7, 9, 15, 19, 20]
+        stress_indices = [1, 6, 8, 11, 12, 14, 18]
 
         depression_score = sum([responses[i-1] for i in depression_indices]) * 2 
         anxiety_score = sum([responses[i-1] for i in anxiety_indices]) * 2
         stress_score = sum([responses[i-1] for i in stress_indices]) * 2
     elif version == 'DASS-42':
         # Indices for DASS-42 provided by the template
-        depression_indices = [2, 4, 9, 12, 15, 16, 20, 23, 25, 30, 33, 36, 37, 41]
-        anxiety_indices = [1, 3, 6, 8, 14, 18, 22, 24, 27, 29, 34, 39, 40, 41]
-        stress_indices = [0, 5, 7, 10, 11, 13, 17, 21, 26, 28, 31, 32, 34, 38]
+        depression_indices = [3, 5, 10, 13, 16, 17, 21, 24, 26, 31, 34, 37, 38, 42]
+        anxiety_indices = [2, 4, 7, 9, 15, 19, 20, 23, 25, 28, 30, 36, 40, 41]
+        stress_indices = [1, 6, 8, 11, 12, 14, 18, 22, 27, 29, 32, 33, 35, 39]
 
         depression_score = sum([responses[i-1] for i in depression_indices]) 
         anxiety_score = sum([responses[i-1] for i in anxiety_indices])
@@ -102,10 +102,8 @@ def print_scores(scores, version):
 
 
 def main():
-    print("Welcome to the DASS-21 Self-report Questionnaire.")
-    
-    filename, version = main_menu()
-    questions_list = read_file(filename)
+    filename, version = main_menu()  # Collects the filename and version based on user input
+    questions_list = read_file(filename)  # Reads the questions based on the chosen version
     responses = display_questions_and_collect_responses(questions_list)
     scores = calculate_dass_scores(responses, version)
     print_scores(scores, version)
