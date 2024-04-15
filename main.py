@@ -72,6 +72,7 @@ def interpret_scores(score, category):
             return labels[i]
     return labels[-1]
 
+
 def main():
     print("Welcome to the DASS-21 Self-report Questionnaire.")
     
