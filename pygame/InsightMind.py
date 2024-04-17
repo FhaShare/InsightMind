@@ -45,6 +45,11 @@ def main():
             if start_button.draw(screen):
                 print("Button clicked")  # Debug print
                 current_page = 1  # Move to the second page
+        
+        # DassMenu page logic
+        elif current_page == 1:
+            if dass21_button.draw(screen):
+                print("dass21_button clicked") 
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
