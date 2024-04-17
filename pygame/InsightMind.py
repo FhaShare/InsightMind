@@ -14,10 +14,18 @@ def main():
     # image1 = pygame.image.load("images/filename.png")
     main_menu = pygame.image.load("pygame/images/MainMenu.png")
     # second_page = pygame.image.load()
+    dass_menu = pygame.image.load("pygame/images/DassMenu.png")
 
+    # List of pages
+    pages = [main_menu, dass_menu]
+
+    # Button on MainMenu page
     start_img = pygame.image.load('pygame/images/MainButton.png').convert_alpha()
+    start_button = buttons.Button(65, 474.8, start_img, 1)
 
-    start_button = buttons.Button(35, 474.8, start_img, 1)
+    # Button on DassMenu page
+    dass21_img = pygame.image.load('pygame/images/dass21.png').convert_alpha()
+    dass21_button = buttons.Button(128.4, 283.6, dass21_img, 1)
 
     # slide_list = [main_menu, second_page]
     # questionair1 = [...]
@@ -29,15 +37,16 @@ def main():
     while running:
         screen.fill((0,0,0))
 
-        #ImAGE draw
-        # screen.blit(Image variable name, (x position, y position))
-        screen.blit(main_menu, (0,0))
+        # Draw the current page
+        screen.blit(pages[current_page], (0, 0))
 
-        if start_button.draw(screen):
-            print("click")
+        # Draw the start button on the main menu
+        if current_page == 0:
+            if start_button.draw(screen):
+                print("Button clicked")  # Debug print
+                current_page = 1  # Move to the second page
 
         for event in pygame.event.get():
-
             if event.type == pygame.QUIT:
                 running = False
 
