@@ -25,7 +25,12 @@ def main():
 
     # Button on DassMenu page
     dass21_img = pygame.image.load('pygame/images/dass21.png').convert_alpha()
-    dass21_button = buttons.Button(128.4, 283.6, dass21_img, 1)
+    dass21_button = buttons.Button(140, 300, dass21_img, 1)
+    dass42_img = pygame.image.load('pygame/images/dass42.png').convert_alpha()
+    dass42_button = buttons.Button(140, 790, dass42_img, 1)
+
+    # DASS21 pages
+    
 
     # slide_list = [main_menu, second_page]
     # questionair1 = [...]
@@ -50,6 +55,15 @@ def main():
         elif current_page == 1:
             if dass21_button.draw(screen):
                 print("dass21_button clicked") 
+                # current_question = dass21List[0]
+            if dass42_button.draw(screen):
+                print("dass42_button clicked")
+                # current_question = dass42List[0]
+
+        #for question in dass21List:
+            #screenblitz(currrent_question)
+
+
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
