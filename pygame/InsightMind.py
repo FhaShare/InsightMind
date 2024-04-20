@@ -63,13 +63,13 @@ def main():
                 current_page = 1  # Move to the second page
 
         # DassMenu page logic
-        elif current_page == 3:
-            if dass21_button.draw(screen):
-                print("dass21_button clicked") 
-                # current_question = dass21List[0]
-            if dass42_button.draw(screen):
-                print("dass42_button clicked")
-                # current_question = dass42List[0]
+        elif current_page in [1, 2]:
+            if back_intro_button.draw(screen):
+                print("Button clicked")  # Debug print
+                current_page -= 1  # Move back to the previous pages
+            if next_intro_button.draw(screen):
+                print("Button clicked")  # Debug print
+                current_page += 1  # Move back to the previous pages
         
         # DassMenu page logic
         elif current_page == 3:
