@@ -1,7 +1,16 @@
 import pygame
 import buttons
 
-
+def load_questionnaire_images(base_path, prefix, count):
+    images = []
+    for i in range(1, count + 1):
+        filename = f"{base_path}/{prefix}_{i}.png"
+        try:
+            image = pygame.image.load(filename).convert_alpha()  # convert_alpha() for better performance with transparency
+            images.append(image)
+        except pygame.error as e:
+            print(f"Failed to load image {filename}: {str(e)}")
+    return images
 
 def main():
     pygame.init()
@@ -20,6 +29,9 @@ def main():
     intro_page2 = pygame.image.load("pygame/images/DASS_Diagnosis.png")
     #Page4: DassMenu
     dass_menu = pygame.image.load("pygame/images/DassMenu.png")
+    #Page5: Dass21 introduction
+
+    #Page6: Dass42 introduction
 
     # List of pages
     pages = [main_menu, intro_page1, intro_page2, dass_menu]
@@ -33,6 +45,7 @@ def main():
     back_intro_button = buttons.Button(291, 860, back_img, 1)
     next_img = pygame.image.load("pygame/images/next.png")
     next_intro_button = buttons.Button(395, 860, next_img, 1)
+    start_img = pygame.image.load("pygame/images/back.png")
 
     # Button on DassMenu page
     dass21_img = pygame.image.load('pygame/images/dass21.png').convert_alpha()
@@ -41,6 +54,10 @@ def main():
     dass42_button = buttons.Button(140, 790, dass42_img, 1)
 
     # DASS21 pages
+
+    # DASS42 Pages
+    dass42List = load_questionnaire_images("pygame/images", "dass42", 42)
+    current_question_index = 0
     
 
     # slide_list = [main_menu, second_page]
@@ -80,7 +97,7 @@ def main():
                 print("dass42_button clicked")
                 # current_question = dass42List[0]
 
-        #for question in dass21List:
+        #for question in dass42List:
             #screenblitz(currrent_question)
 
 
