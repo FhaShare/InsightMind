@@ -11,17 +11,28 @@ def main():
     pygame.display.set_caption("InsightMind")
 
     #Image loading
-    # image1 = pygame.image.load("images/filename.png")
+    # image = pygame.image.load("images/filename.png")
+    # Page1: Main Menu
     main_menu = pygame.image.load("pygame/images/MainMenu.png")
-    # second_page = pygame.image.load()
+    # Page2: Introduction DASS
+    intro_page1 = pygame.image.load("pygame/images/Introduction_DASS.png")
+    # Page3: The DASS and Diagnosis
+    intro_page2 = pygame.image.load("pygame/images/DASS_Diagnosis.png")
+    #Page4: DassMenu
     dass_menu = pygame.image.load("pygame/images/DassMenu.png")
 
     # List of pages
-    pages = [main_menu, dass_menu]
+    pages = [main_menu, intro_page1, intro_page2, dass_menu]
 
     # Button on MainMenu page
     start_img = pygame.image.load('pygame/images/MainButton.png').convert_alpha()
     start_button = buttons.Button(65, 474.8, start_img, 1)
+
+    # Button for navigating pages
+    back_img = pygame.image.load("pygame/images/back.png")
+    back_intro_button = buttons.Button(291, 860, back_img, 1)
+    next_img = pygame.image.load("pygame/images/next.png")
+    next_intro_button = buttons.Button(395, 860, next_img, 1)
 
     # Button on DassMenu page
     dass21_img = pygame.image.load('pygame/images/dass21.png').convert_alpha()
@@ -50,9 +61,18 @@ def main():
             if start_button.draw(screen):
                 print("Button clicked")  # Debug print
                 current_page = 1  # Move to the second page
+
+        # DassMenu page logic
+        elif current_page == 3:
+            if dass21_button.draw(screen):
+                print("dass21_button clicked") 
+                # current_question = dass21List[0]
+            if dass42_button.draw(screen):
+                print("dass42_button clicked")
+                # current_question = dass42List[0]
         
         # DassMenu page logic
-        elif current_page == 1:
+        elif current_page == 3:
             if dass21_button.draw(screen):
                 print("dass21_button clicked") 
                 # current_question = dass21List[0]
