@@ -30,22 +30,24 @@ def main():
     #Page4: DassMenu
     dass_menu = pygame.image.load("pygame/images/DassMenu.png")
     #Page5: Dass21 introduction
-
+    dass21_intro = pygame.image.load("pygame/images/dass21_intro.png")
     #Page6: Dass42 introduction
+    dass42_intro = pygame.image.load("pygame/images/dass42_intro.png")
 
     # List of pages
-    pages = [main_menu, intro_page1, intro_page2, dass_menu]
+    pages = [main_menu, intro_page1, intro_page2, dass_menu, dass21_intro, dass42_intro]
 
     # Button on MainMenu page
-    start_img = pygame.image.load('pygame/images/MainButton.png').convert_alpha()
-    start_button = buttons.Button(65, 474.8, start_img, 1)
+    mainButton_img = pygame.image.load('pygame/images/MainButton.png').convert_alpha()
+    main_button = buttons.Button(65, 474.8, mainButton_img, 1)
 
     # Button for navigating pages
     back_img = pygame.image.load("pygame/images/back.png")
     back_intro_button = buttons.Button(291, 860, back_img, 1)
     next_img = pygame.image.load("pygame/images/next.png")
     next_intro_button = buttons.Button(395, 860, next_img, 1)
-    start_img = pygame.image.load("pygame/images/back.png")
+    start_img = pygame.image.load("pygame/images/start_80px.png")
+    start_button = buttons.Button(206.3, 760, start_img, 1)
 
     # Button on DassMenu page
     dass21_img = pygame.image.load('pygame/images/dass21.png').convert_alpha()
@@ -56,7 +58,7 @@ def main():
     # DASS21 pages
 
     # DASS42 Pages
-    dass42List = load_questionnaire_images("pygame/images", "dass42", 42)
+    dass42List = load_questionnaire_images("pygame/images/Dass42_questionnaires", "dass42", 42)
     current_question_index = 0
     
 
@@ -75,7 +77,7 @@ def main():
 
         # Draw the start button on the main menu
         if current_page == 0:
-            if start_button.draw(screen):
+            if main_button.draw(screen):
                 print("Button clicked")  # Debug print
                 current_page = 1  # Move to the second page
 
@@ -92,13 +94,19 @@ def main():
         elif current_page == 3:
             if dass21_button.draw(screen):
                 print("dass21_button clicked") 
-                # current_question = dass21List[0]
+                current_page = 4
             if dass42_button.draw(screen):
                 print("dass42_button clicked")
-                # current_question = dass42List[0]
+                current_page = 5
 
-        #for question in dass42List:
-            #screenblitz(currrent_question)
+        # Handle DASS42 questionnaire display
+        if current_page == 4:
+            if current_question_index < len(dass42List):
+                screen.blit(dass42List[current_question_index], (0, 0))
+                if next_intro_button.draw(screen):  # Reusing next button for question navigation
+                    current_question_index += 1
+                    if current_question_index >= len(dass42List):
+                        current_question_index = 0  # Loop or end
 
 
 
