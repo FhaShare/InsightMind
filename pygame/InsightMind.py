@@ -109,20 +109,20 @@ def main():
     #Image loading
     # image = pygame.image.load("images/filename.png")
         # Page1: Main Menu
-    main_menu = pygame.image.load("pygame/images/MainMenu.png")
+    main_menu = pygame.image.load('pygame/images/MainMenu1.png')
         # Page2: Introduction DASS
-    intro_page1 = pygame.image.load("pygame/images/Introduction_DASS.png")
+    intro_page1 = pygame.image.load('pygame/images/Introduction_DASS.png')
         # Page3: The DASS and Diagnosis
-    intro_page2 = pygame.image.load("pygame/images/DASS_Diagnosis.png")
+    intro_page2 = pygame.image.load('pygame/images/DASS_Diagnosis.png')
         #Page4: DassMenu
-    dass_menu = pygame.image.load("pygame/images/DassMenu.png")
+    dass_menu = pygame.image.load('pygame/images/DassMenu.png')
         #Page5: Dass21 introduction
-    dass21_intro = pygame.image.load("pygame/images/dass21_intro.png")
+    dass21_intro = pygame.image.load('pygame/images/dass21_intro.png')
         #Page6: Dass42 introduction
-    dass42_intro = pygame.image.load("pygame/images/dass42_intro.png")
+    dass42_intro = pygame.image.load('pygame/images/dass42_intro.png')
         #Page7: questionnaire (Use None for dynamic content page)
         #Page8: Result
-    result_page = pygame.image.load("pygame/images/result.png")
+    result_page = pygame.image.load('pygame/images/result.png')
         # List of pages 
     pages = [main_menu, intro_page1, intro_page2, dass_menu, dass21_intro, dass42_intro, None, result_page]
 
