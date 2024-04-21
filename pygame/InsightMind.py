@@ -109,20 +109,20 @@ def main():
     #Image loading
     # image = pygame.image.load("images/filename.png")
         # Page1: Main Menu
-    main_menu = pygame.image.load('pygame/images/MainMenu1.png')
+    main_menu = pygame.image.load('pygame/images/MainMenu.png').convert()
         # Page2: Introduction DASS
-    intro_page1 = pygame.image.load('pygame/images/Introduction_DASS.png')
+    intro_page1 = pygame.image.load('pygame/images/Introduction_DASS.png').convert()
         # Page3: The DASS and Diagnosis
-    intro_page2 = pygame.image.load('pygame/images/DASS_Diagnosis.png')
+    intro_page2 = pygame.image.load('pygame/images/DASS_Diagnosis.png').convert()
         #Page4: DassMenu
-    dass_menu = pygame.image.load('pygame/images/DassMenu.png')
+    dass_menu = pygame.image.load('pygame/images/DassMenu.png').convert()
         #Page5: Dass21 introduction
-    dass21_intro = pygame.image.load('pygame/images/dass21_intro.png')
+    dass21_intro = pygame.image.load('pygame/images/dass21_intro.png').convert()
         #Page6: Dass42 introduction
-    dass42_intro = pygame.image.load('pygame/images/dass42_intro.png')
+    dass42_intro = pygame.image.load('pygame/images/dass42_intro.png').convert()
         #Page7: questionnaire (Use None for dynamic content page)
         #Page8: Result
-    result_page = pygame.image.load('pygame/images/result.png')
+    result_page = pygame.image.load('pygame/images/result.png').convert()
         # List of pages 
     pages = [main_menu, intro_page1, intro_page2, dass_menu, dass21_intro, dass42_intro, None, result_page]
 
@@ -131,13 +131,13 @@ def main():
     mainButton_img = pygame.image.load("pygame/images/MainButton.png").convert_alpha()
     main_button = buttons.Button(65, 474.8, mainButton_img, 1)
         # Button for navigating pages
-    back_img = pygame.image.load("pygame/images/back.png")
+    back_img = pygame.image.load("pygame/images/back.png").convert_alpha()
     back_intro_button = buttons.Button(291, 860, back_img, 1)
     back_button = buttons.Button(167, 812, back_img, 1)
-    next_img = pygame.image.load("pygame/images/next.png")
+    next_img = pygame.image.load("pygame/images/next.png").convert_alpha()
     next_intro_button = buttons.Button(395, 860, next_img, 1)
     next_button = buttons.Button(367, 812, next_img, 1)
-    start_img = pygame.image.load("pygame/images/start_80px.png")
+    start_img = pygame.image.load("pygame/images/start_80px.png").convert_alpha()
     start_button = buttons.Button(206.3, 760, start_img, 1)
         # Button on DassMenu page
     dass21_img = pygame.image.load("pygame/images/dass21.png").convert_alpha()
