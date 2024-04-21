@@ -167,7 +167,7 @@ def main():
     # Initialize responses and last_responses for DASS42 questionnaire
     dass42List = load_questionnaire_images("pygame/images/Dass42_questionnaires", "dass42", 42)
     responses = [-1] * len(dass42List)
-    last_responses = [None] * len(dass42List)
+    
 
     current_page = 0
     questionnair_finish = False
