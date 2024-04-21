@@ -3,13 +3,19 @@ import buttons
 
 def load_questionnaire_images(base_path, prefix, count):
     images = []
+
     for i in range(1, count + 1):
         filename = f"{base_path}/{prefix}_{i}.png"
-        try:
-            image = pygame.image.load(filename).convert_alpha()  # convert_alpha() for better performance with transparency
-            images.append(image)
-        except pygame.error as e:
-            print(f"Failed to load image {filename}: {str(e)}")
+
+        image = pygame.image.load(filename).convert_alpha()
+        images.append(image)
+
+    #for i in range(1, count + 1):
+        #filename = f"{base_path}/{prefix}_{i}.png"
+
+        #image = pygame.image.load(filename).convert_alpha()  # convert_alpha() for better performance with transparency
+        #images.append(image)
+
     return images
 
 def questionnaire_display(screen, current_question_index, responses, dass42List, response_buttons, last_responses, font, back_button, next_button):
@@ -109,7 +115,7 @@ def main():
     #Image loading
     # image = pygame.image.load("images/filename.png")
         # Page1: Main Menu
-    main_menu = pygame.image.load('pygame/images/MainMenu.png').convert()
+    main_menu = pygame.image.load('pygame\images\MainMenu.png')
         # Page2: Introduction DASS
     intro_page1 = pygame.image.load('pygame/images/Introduction_DASS.png').convert()
         # Page3: The DASS and Diagnosis
@@ -117,9 +123,9 @@ def main():
         #Page4: DassMenu
     dass_menu = pygame.image.load('pygame/images/DassMenu.png').convert()
         #Page5: Dass21 introduction
-    dass21_intro = pygame.image.load('pygame/images/dass21_intro.png').convert()
+    dass21_intro = pygame.image.load('pygame\images\dass21_intro.png').convert()
         #Page6: Dass42 introduction
-    dass42_intro = pygame.image.load('pygame/images/dass42_intro.png').convert()
+    dass42_intro = pygame.image.load('pygame\images\dass42_intro.png').convert()
         #Page7: questionnaire (Use None for dynamic content page)
         #Page8: Result
     result_page = pygame.image.load('pygame/images/result.png').convert()
@@ -164,6 +170,7 @@ def main():
     last_responses = [None] * len(dass42List)
 
     current_page = 0
+    questionnair_finish = False
 
     running = True
     while running:
@@ -171,49 +178,109 @@ def main():
         screen.fill((0,0,0))
         
         if current_page == 0:
+            screen.blit(main_menu, (0, 0))
+
             # Draw the start button on the main menu
             if main_button.draw(screen):
                 print("Button clicked")  # Debug print
                 current_page = 1  # Move to the second page
 
         # DassMenu page logic
-        elif current_page in [1, 2]:
+        elif current_page == 1:
+            screen.blit(intro_page1, (0, 0))
+            
             if back_intro_button.draw(screen):
                 print("Back Button clicked")  # Debug print
                 current_page -= 1  # Move back to the previous pages
             if next_intro_button.draw(screen):
                 print("Next Button clicked")  # Debug print
                 current_page += 1  # Move for to the previous pages
-        
+
+        elif current_page == 2:
+            screen.blit(intro_page2, (0, 0))
+            
+            if back_intro_button.draw(screen):
+                print("Back Button clicked")  # Debug print
+                current_page -= 1  # Move back to the previous pages
+            if next_intro_button.draw(screen):
+                print("Next Button clicked")  # Debug print
+                current_page += 1  # Move for to the previous pages
+
         # DassMenu page logic
         elif current_page == 3:
+            screen.blit(dass_menu, (0, 0))
+
             if dass21_button.draw(screen):
-                print("dass21_button clicked") 
+                print("dass21_button clicked")
+                #selectedList = dass21List
                 current_page = 4
             if dass42_button.draw(screen):
                 print("dass42_button clicked")
+                selectedList = dass42List
                 current_page = 5
 
         # DASS introduction
-        elif current_page in [4, 5]:
+        elif current_page == 4:
+            screen.blit(dass21_intro, (0, 0))
+
             if start_button.draw(screen):
                 print("DASS introduction - Button clicked")  # Debug print
                 current_question_index = 0  # Reset the question index to start at the first question
                 current_page = 6  # Move to questionnaire page
+
+        elif current_page == 5:
+            screen.blit(dass42_intro, (0, 0))
+
+            if start_button.draw(screen):
+                print("DASS introduction - Button clicked")  # Debug print
+                current_question_index = 0  # Reset the question index to start at the first question
+                current_page = 6  # Move to questionnaire page      
                 
         # DASS42 questionnaire display
         if current_page == 6:  # Assuming page 6 is the questionnaire
-            response_made, new_index = questionnaire_display(screen, current_question_index, responses, dass42List, response_buttons, last_responses, font, back_button, next_button)
-            if response_made:
-                if new_index != current_question_index:
-                    current_question_index = new_index
+
+            screen.blit(selectedList[current_question_index], (0,0))
+
+            if respones0_button.draw(screen):
+                #logice here
+                # respone 1
+                if selectedList[current_question_index] == selectedList[-1]:
+                    questionnair_finish = True
                 else:
                     current_question_index += 1
-            elif not response_made and new_index != current_question_index:
-                current_question_index = new_index
-            else:
-                current_page = 7  # Proceed to results page after the last question
 
+            if respones1_button.draw(screen):
+                #logice here
+                #response 2
+                if selectedList[current_question_index] == selectedList[-1]:
+                    questionnair_finish = True
+                else:
+                    current_question_index += 1
+
+            if respones2_button.draw(screen):
+                #logice here
+                if selectedList[current_question_index] == selectedList[-1]:
+                    questionnair_finish = True
+                else:
+                    current_question_index += 1
+
+            if respones3_button.draw(screen):
+                #logice here
+                if selectedList[current_question_index] == selectedList[-1]:
+                    questionnair_finish = True
+                else:
+                    current_question_index += 1
+
+        if questionnair_finish == True:
+            screen.blit(result_page, (0, 0))
+
+            # print result onto screen logic
+            textString = "This is where my result would be"
+
+            ending_text = font.render(textString, True, (0, 0, 0))
+            
+            screen.blit(ending_text, (250, 290))
+            
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
