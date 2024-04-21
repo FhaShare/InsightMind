@@ -10,40 +10,15 @@ def load_questionnaire_images(base_path, prefix, count):
         image = pygame.image.load(filename).convert_alpha()
         images.append(image)
 
-    #for i in range(1, count + 1):
-        #filename = f"{base_path}/{prefix}_{i}.png"
-
-        #image = pygame.image.load(filename).convert_alpha()  # convert_alpha() for better performance with transparency
-        #images.append(image)
-
     return images
 
-def questionnaire_display(screen, current_question_index, responses, dass42List, response_buttons, last_responses, font, back_button, next_button):
-    screen.blit(dass42List[current_question_index], (0, 0))
-    response = None
-    for i, button in enumerate(response_buttons):
-        if button.draw(screen):
-            responses[current_question_index] = i
-            last_responses[current_question_index] = i
-            response = i
-        
-        if last_responses[current_question_index] == i:
-            pygame.draw.rect(screen, (192, 192, 192), button.rect.inflate(2, 2), 1)
+def handle_questionnaire(screen, current_question_index, responses, dass42List):
+    # Handle questionnaire interactions (similar to your existing logic)
+    pass
 
-    if back_button.draw(screen):
-        if current_question_index > 0:
-            return False, current_question_index - 1  # Return False and the new question index
-        else:
-            # Handle the case where there is no previous question (maybe go back to a menu)
-            return False, current_question_index
-
-    # Display error if no response and next button is pressed
-    if next_button.draw(screen) and response is None:
-        error_message = font.render("Please select an option to continue.", True, (255, 0, 0))
-        screen.blit(error_message, (100, 900))
-        return False
-
-    return True, current_question_index 
+def display_results(screen, responses, font):
+    # Calculate scores and display results
+    pass
 
 def calculate_dass_scores(responses, version):
     if version == 'DASS-21':
@@ -115,7 +90,7 @@ def main():
     #Image loading
     # image = pygame.image.load("images/filename.png")
         # Page1: Main Menu
-    main_menu = pygame.image.load('pygame\images\MainMenu.png')
+    main_menu = pygame.image.load('pygame/images/MainMenu.png').convert()
         # Page2: Introduction DASS
     intro_page1 = pygame.image.load('pygame/images/Introduction_DASS.png').convert()
         # Page3: The DASS and Diagnosis
@@ -123,14 +98,14 @@ def main():
         #Page4: DassMenu
     dass_menu = pygame.image.load('pygame/images/DassMenu.png').convert()
         #Page5: Dass21 introduction
-    dass21_intro = pygame.image.load('pygame\images\dass21_intro.png').convert()
+    dass21_intro = pygame.image.load('pygame/images/dass21_intro.png').convert()
         #Page6: Dass42 introduction
-    dass42_intro = pygame.image.load('pygame\images\dass42_intro.png').convert()
+    dass42_intro = pygame.image.load('pygame/images/dass42_intro.png').convert()
         #Page7: questionnaire (Use None for dynamic content page)
         #Page8: Result
     result_page = pygame.image.load('pygame/images/result.png').convert()
         # List of pages 
-    pages = [main_menu, intro_page1, intro_page2, dass_menu, dass21_intro, dass42_intro, None, result_page]
+    pages = [main_menu, intro_page1, intro_page2, dass_menu, dass21_intro, dass42_intro, result_page]
 
     # Initialize buttons
         # Button on MainMenu page
@@ -139,10 +114,10 @@ def main():
         # Button for navigating pages
     back_img = pygame.image.load("pygame/images/back.png").convert_alpha()
     back_intro_button = buttons.Button(291, 860, back_img, 1)
-    back_button = buttons.Button(167, 812, back_img, 1)
+    back_button = buttons.Button(100, 835, back_img, 1)
     next_img = pygame.image.load("pygame/images/next.png").convert_alpha()
     next_intro_button = buttons.Button(395, 860, next_img, 1)
-    next_button = buttons.Button(367, 812, next_img, 1)
+    next_button = buttons.Button(379, 835, next_img, 1)
     start_img = pygame.image.load("pygame/images/start_80px.png").convert_alpha()
     start_button = buttons.Button(206.3, 760, start_img, 1)
         # Button on DassMenu page
@@ -152,33 +127,34 @@ def main():
     dass42_button = buttons.Button(140, 790, dass42_img, 1)
         # Button for Responses
     respones0_img = pygame.image.load("pygame/images/response0.png").convert_alpha()
-    respones0_button = buttons.Button(124, 390, respones0_img, 1)
+    respones0_button = buttons.Button(124, 450, respones0_img, 1)
     respones1_img = pygame.image.load("pygame/images/response1.png").convert_alpha()
-    respones1_button = buttons.Button(124, 490, respones1_img, 1)
+    respones1_button = buttons.Button(124, 550, respones1_img, 1)
     respones2_img = pygame.image.load("pygame/images/response2.png").convert_alpha()
-    respones2_button = buttons.Button(124, 590, respones2_img, 1)
+    respones2_button = buttons.Button(124, 650, respones2_img, 1)
     respones3_img = pygame.image.load("pygame/images/response3.png").convert_alpha()
-    respones3_button = buttons.Button(124, 690, respones3_img, 1)
-    response_buttons = [respones0_button, respones1_button, respones2_button, respones3_button]
-
+    respones3_button = buttons.Button(124, 750, respones3_img, 1)
+    
     # DASS21 pages
 
     # DASS42 Pages
-    # Initialize responses and last_responses for DASS42 questionnaire
+    # Initialize questionnaire images
     dass42List = load_questionnaire_images("pygame/images/Dass42_questionnaires", "dass42", 42)
-    responses = [-1] * len(dass42List)
-    
+    responses = [-1] * len(dass42List)  # Initialize responses list
+    current_question_index = 0
 
     current_page = 0
-    questionnair_finish = False
+    questionnaire_finished = False
 
     running = True
     while running:
         # Clear the screen
         screen.fill((0,0,0))
+        # Draw the current page
+        screen.blit(pages[current_page], (0, 0))
         
         if current_page == 0:
-            screen.blit(main_menu, (0, 0))
+            # screen.blit(main_menu, (0, 0))
 
             # Draw the start button on the main menu
             if main_button.draw(screen):
@@ -187,8 +163,7 @@ def main():
 
         # DassMenu page logic
         elif current_page == 1:
-            screen.blit(intro_page1, (0, 0))
-            
+            # screen.blit(intro_page1, (0, 0))
             if back_intro_button.draw(screen):
                 print("Back Button clicked")  # Debug print
                 current_page -= 1  # Move back to the previous pages
@@ -197,8 +172,7 @@ def main():
                 current_page += 1  # Move for to the previous pages
 
         elif current_page == 2:
-            screen.blit(intro_page2, (0, 0))
-            
+            # screen.blit(intro_page2, (0, 0))
             if back_intro_button.draw(screen):
                 print("Back Button clicked")  # Debug print
                 current_page -= 1  # Move back to the previous pages
@@ -208,20 +182,21 @@ def main():
 
         # DassMenu page logic
         elif current_page == 3:
-            screen.blit(dass_menu, (0, 0))
-
+            # screen.blit(dass_menu, (0, 0))
             if dass21_button.draw(screen):
                 print("dass21_button clicked")
                 #selectedList = dass21List
+                #version = 'DASS-42'
                 current_page = 4
             if dass42_button.draw(screen):
                 print("dass42_button clicked")
                 selectedList = dass42List
+                #version = 'DASS-42'
                 current_page = 5
 
         # DASS introduction
         elif current_page == 4:
-            screen.blit(dass21_intro, (0, 0))
+            #screen.blit(dass21_intro, (0, 0))
 
             if start_button.draw(screen):
                 print("DASS introduction - Button clicked")  # Debug print
@@ -229,49 +204,64 @@ def main():
                 current_page = 6  # Move to questionnaire page
 
         elif current_page == 5:
-            screen.blit(dass42_intro, (0, 0))
-
+            # screen.blit(dass42_intro, (0, 0))
             if start_button.draw(screen):
                 print("DASS introduction - Button clicked")  # Debug print
                 current_question_index = 0  # Reset the question index to start at the first question
                 current_page = 6  # Move to questionnaire page      
                 
         # DASS42 questionnaire display
-        if current_page == 6:  # Assuming page 6 is the questionnaire
-
-            screen.blit(selectedList[current_question_index], (0,0))
+        if current_page == 6: 
+            if not questionnaire_finished:
+                screen.blit(dass42List[current_question_index], (0, 0))
+                handle_questionnaire(screen, current_question_index, responses, dass42List) 
+                print(f"Displaying Question {current_question_index + 1}/{len(dass42List)}")
 
             if respones0_button.draw(screen):
-                #logice here
-                # respone 1
-                if selectedList[current_question_index] == selectedList[-1]:
-                    questionnair_finish = True
-                else:
+                responses[current_question_index] = 0
+                if current_question_index < len(dass42List) - 1:
                     current_question_index += 1
+                else:
+                    questionnaire_finished = True
 
             if respones1_button.draw(screen):
-                #logice here
-                #response 2
-                if selectedList[current_question_index] == selectedList[-1]:
-                    questionnair_finish = True
-                else:
+                responses[current_question_index] = 1
+                if current_question_index < len(dass42List) - 1:
                     current_question_index += 1
+                else:
+                    questionnaire_finished = True
 
             if respones2_button.draw(screen):
-                #logice here
-                if selectedList[current_question_index] == selectedList[-1]:
-                    questionnair_finish = True
-                else:
+                responses[current_question_index] = 2
+                if current_question_index < len(dass42List) - 1:
                     current_question_index += 1
+                else:
+                    questionnaire_finished = True
 
             if respones3_button.draw(screen):
-                #logice here
-                if selectedList[current_question_index] == selectedList[-1]:
-                    questionnair_finish = True
-                else:
+                responses[current_question_index] = 3
+                if current_question_index < len(dass42List) - 1:
                     current_question_index += 1
+                else:
+                    questionnaire_finished = True
 
-        if questionnair_finish == True:
+            if back_button.draw(screen):
+                print("Back Button clicked")  # Debug print
+                if current_question_index > 0:
+                    current_question_index -= 1 # Move back to the previous pages
+
+            if next_button.draw(screen):
+                print("Next Button clicked")  # Debug print
+                if responses[current_question_index] == -1:
+                    error_message = font.render("Please select an option to continue.", True, (255, 0, 0))
+                    screen.blit(error_message, (100, 900))
+                elif current_question_index < len(dass42List) - 1:
+                    current_question_index += 1 # Move for to the previous pages
+                else:
+                    questionnaire_finished = True
+
+
+        if questionnaire_finished == True:
             screen.blit(result_page, (0, 0))
 
             # print result onto screen logic
@@ -279,7 +269,8 @@ def main():
 
             ending_text = font.render(textString, True, (0, 0, 0))
             
-            screen.blit(ending_text, (250, 290))
+            screen.blit(ending_text, (50, 290))
+            print(responses)
             
 
         for event in pygame.event.get():
@@ -287,6 +278,7 @@ def main():
                 running = False
 
         pygame.display.update()
+        pygame.display.flip()
         clock.tick(60)
 
     pygame.quit()
