@@ -150,6 +150,24 @@ def main():
     respones3_button = buttons.Button(124, 720, respones3_img, 1)
 
     # Icons
+    #Depression
+    depression_normal_img = pygame.image.load("pygame/images/Depression/Depression_Normal.png").convert_alpha()
+    depression_mild_img = pygame.image.load("pygame/images/Depression/Depression_Mild.png").convert_alpha()
+    depression_moderate_img = pygame.image.load("pygame/images/Depression/Depression_Moderate.png").convert_alpha()
+    depression_severe_img = pygame.image.load("pygame/images/Depression/Depression_Severe.png").convert_alpha()
+    depression_extremely_severe_img = pygame.image.load("pygame/images/Depression/Depression_ExtremelySevere.png").convert_alpha()
+    #Anxiety
+    anxiety_normal_img = pygame.image.load("pygame/images/Anxiety/Anxiety_Normal.png").convert_alpha()
+    anxiety_mild_img = pygame.image.load("pygame/images/Anxiety/Anxiety_Mild.png").convert_alpha()
+    anxiety_moderate_img = pygame.image.load("pygame/images/Anxiety/Anxiety_Moderate.png").convert_alpha()
+    anxiety_severe_img = pygame.image.load("pygame/images/Anxiety/Anxiety_Severe.png").convert_alpha()
+    anxiety_extremely_severe_img = pygame.image.load("pygame/images/Anxiety/Anxiety_ExtremelySevere.png").convert_alpha()
+    #Stress
+    stress_normal_img = pygame.image.load("pygame/images/Stress/Stress_Normal.png").convert_alpha()
+    stress_mild_img = pygame.image.load("pygame/images/Stress/Stress_Mild.png").convert_alpha()
+    stress_moderate_img = pygame.image.load("pygame/images/Stress/Stress_Moderate.png").convert_alpha()
+    stress_severe_img = pygame.image.load("pygame/images/Stress/Stress_Severe.png").convert_alpha()
+    stress_extremely_severe_img = pygame.image.load("pygame/images/Stress/Stress_ExtremelySevere.png").convert_alpha()
     
     
     # DASS21 pages
