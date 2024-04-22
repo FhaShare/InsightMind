@@ -31,3 +31,8 @@ class Button():
 		surface.blit(self.image, (self.rect.x, self.rect.y))
 
 		return action
+	
+	def is_over(self, pos):
+        # pos is a tuple (x, y) of mouse coordinates
+		return self.rect.collidepoint(pos)
+	
