@@ -1,5 +1,7 @@
 import pygame
 import buttons
+import matplotlib.pyplot as plt 
+import numpy as np 
 
 def load_questionnaire_images(base_path, prefix, count):
     images = []
@@ -84,12 +86,66 @@ def print_scores(screen, scores, version, font):
     anxiety_surf = font.render(anxiety_text, True, (0, 255, 0))  # Changed color to green for visibility
     stress_surf = font.render(stress_text, True, (0, 0, 255))  # Changed color to blue for visibility
     
+    #if depression_label == "severe":
+        #screen.blit(#icon, (30, 200))
     # Position and draw these surfaces on the screen
     screen.blit(depression_surf, (50, 200))
     screen.blit(anxiety_surf, (50, 250))
     screen.blit(stress_surf, (50, 300))
     
     pygame.display.update()  # Ensure the display is updated to show changes
+
+def make_radar_chart(screen, name, depression_score, anxiety_score, stress_score):
+    # Define markers and attribute labels for the triangular radar chart
+    markers = [1, 2, 3, 4, 5]
+    attribute_labels = ["Normal", "Mild", "Moderate", "Severe", "Extremely Severe"]
+    labels = np.array(attribute_labels)
+    
+    # Define angles for the triangular radar chart
+    angles = [0, np.pi/2, 2 * np.pi/2]
+    
+    # Normalize scores to range [0, 1]
+    depression_norm = depression_score / max(markers)
+    anxiety_norm = anxiety_score / max(markers)
+    stress_norm = stress_score / max(markers)
+    
+    # Create triangular radar chart data
+    stats = [depression_norm, anxiety_norm, stress_norm, depression_norm]  # Close the triangular shape
+    
+    # Plot the triangular radar chart
+    color = (255, 255, 255)  # White color for lines and area fill
+    thickness = 2
+    alpha = 128  # Transparency for the area fill
+    
+    # Calculate points for the radar chart
+    points = []
+    for angle, stat in zip(angles, stats):
+        x = 250 * stat * np.cos(angle) + 300
+        y = 250 * stat * np.sin(angle) + 300
+        points.append((x, y))
+    
+    # Draw the radar chart lines
+    for i in range(len(points) - 1):
+        pygame.draw.line(screen, color, points[i], points[i+1], thickness)
+    pygame.draw.line(screen, color, points[-1], points[0], thickness)
+    
+    # Fill the area of the radar chart
+    pygame.draw.polygon(screen, (color[0], color[1], color[2], alpha), points)
+    
+    # Set axis labels and markers
+    font = pygame.font.SysFont(None, 24)
+    for angle, label in zip(angles, ["Depression", "Anxiety", "Stress"]):
+        text = font.render(label, True, color)
+        text_rect = text.get_rect(center=(300 + 250 * np.cos(angle), 300 + 250 * np.sin(angle)))
+        screen.blit(text, text_rect)
+    
+    # Set title
+    title_font = pygame.font.SysFont(None, 36)
+    title_text = title_font.render(name, True, color)
+    screen.blit(title_text, (250, 50))
+    
+    # Update the display
+    pygame.display.flip()
 
 
 def main():
@@ -98,6 +154,8 @@ def main():
     screen = pygame.display.set_mode((534, 950))
     pygame.font.init()  # Initialize the font module
     font = pygame.font.Font(None, 36)  # Global font object
+    #font2 = pygame.font.Font("incAssests/fonts/SansitaOne.tff",25)
+
 
     pygame.display.set_caption("InsightMind")
 
@@ -109,14 +167,14 @@ def main():
     intro_page1 = pygame.image.load('pygame/images/Introduction_DASS.png').convert()
         # Page3: The DASS and Diagnosis
     intro_page2 = pygame.image.load('pygame/images/DASS_Diagnosis.png').convert()
-        #Page4: DassMenu
+        # Page4: DassMenu
     dass_menu = pygame.image.load('pygame/images/DassMenu.png').convert()
-        #Page5: Dass21 introduction
+        # Page5: Dass21 introduction
     dass21_intro = pygame.image.load('pygame/images/dass21_intro.png').convert()
-        #Page6: Dass42 introduction
+        # Page6: Dass42 introduction
     dass42_intro = pygame.image.load('pygame/images/dass42_intro.png').convert()
-        #Page7: questionnaire (Use None for dynamic content page)
-        #Page8: Result
+        # Page7: questionnaire (Use None for dynamic content page)
+        # Page8: Result
     result_page = pygame.image.load('pygame/images/result.png').convert()
         # List of pages 
     pages = [main_menu, intro_page1, intro_page2, dass_menu, dass21_intro, dass42_intro, result_page]
@@ -150,9 +208,12 @@ def main():
     respones3_button = buttons.Button(124, 720, respones3_img, 1)
 
     # Icons
-    
+        # Depression
+    depression_normal_img = pygame.image.load("pygame/images/Depression/Depression_Normal.png").convert_alpha()
+    depression_normal_img = pygame.image.load("pygame/images/Depression/Depression_Normal.png").convert_alpha()
     
     # DASS21 pages
+    dass21List = [dass21_intro, result_page]
 
     # DASS42 Pages
     # Initialize questionnaire images
@@ -228,10 +289,82 @@ def main():
             if start_button.draw(screen):
                 print("DASS introduction - Button clicked")  # Debug print
                 current_question_index = 0  # Reset the question index to start at the first question
-                current_page = 6  # Move to questionnaire page      
+                current_page = 7  # Move to questionnaire page
+
+        # DASS21 questionnaire display
+        if current_page == 6: 
+            if not questionnaire_finished:
+                screen.blit(dass21List[current_question_index], (0, 0))
+                handle_questionnaire(screen, current_question_index, responses, dass42List) 
+                if not question_printed:
+                    print(f"Displaying Question {current_question_index + 1}/{len(dass42List)}")
+                    question_printed = True
+        
+            if respones0_button.draw(screen):
+                responses[current_question_index] = 0
+                if current_question_index < len(dass42List) - 1:
+                    current_question_index += 1
+                    show_error_message = False
+                    question_printed = False  # Reset flag here
+                    print("responses = 0")  # Debug print
+                else:
+                    questionnaire_finished = True
+
+            if respones1_button.draw(screen):
+                responses[current_question_index] = 1
+                if current_question_index < len(dass42List) - 1:
+                    current_question_index += 1
+                    show_error_message = False
+                    question_printed = False  # Reset flag here
+                    print("responses = 1")  # Debug print
+                else:
+                    questionnaire_finished = True
+
+            if respones2_button.draw(screen):
+                responses[current_question_index] = 2               
+                if current_question_index < len(dass42List) - 1:
+                    current_question_index += 1
+                    show_error_message = False
+                    question_printed = False  # Reset flag here
+                    print("responses = 2")  # Debug print
+                else:
+                    questionnaire_finished = True
+
+            if respones3_button.draw(screen):
+                responses[current_question_index] = 3
+                if current_question_index < len(dass42List) - 1:
+                    current_question_index += 1
+                    show_error_message = False
+                    question_printed = False  # Reset flag here
+                    print("responses = 3")  # Debug print
+                else:
+                    questionnaire_finished = True
+
+            # Button for navigating pages
+            if back_button.draw(screen):
+                if current_question_index > 0:
+                    current_question_index -= 1  # Move back to the previous question
+                    question_printed = False  # Reset flag here
+                    print("Back Button clicked")  # Debug print
+            if next_button.draw(screen):
+                print("Next Button clicked")  # Debug print
+                if responses[current_question_index] == -1:
+                    if not error_message:
+                        error_message = font.render("Please select an option to continue.", True, (255, 0, 0))
+                    show_error_message = True
+                else:
+                    show_error_message = False
+                    if current_question_index < len(dass42List) - 1:
+                        current_question_index += 1
+                        question_printed = False  # Ensuring we reset this to allow re-printing question display
+                    else:
+                        questionnaire_finished = True
+            if show_error_message and error_message:
+                screen.blit(error_message, (55, 250))
+   
                 
         # DASS42 questionnaire display
-        if current_page == 6: 
+        if current_page == 7: 
             if not questionnaire_finished:
                 screen.blit(dass42List[current_question_index], (0, 0))
                 handle_questionnaire(screen, current_question_index, responses, dass42List) 
@@ -308,6 +441,12 @@ def main():
             textString = "Here are your results:"
             ending_text = font.render(textString, True, (0, 0, 0))
             screen.blit(ending_text, (50, 100))
+
+            scores = calculate_dass_scores(responses, 'DASS-42')
+            print_scores(screen, scores, 'DASS-42', font)  # Correctly call print_scores
+
+            depression_score, anxiety_score, stress_score = calculate_dass_scores(responses, 'DASS-42')
+            make_radar_chart(screen, 'DASS-42', depression_score, anxiety_score, stress_score)
 
             if not results_printed:
                 # Calculate and display the scores
