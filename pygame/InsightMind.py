@@ -127,10 +127,10 @@ def main():
     main_button = buttons.Button(65, 474.8, mainButton_img, 1)
         # Button for navigating pages
     back_img = pygame.image.load("pygame/images/back.png").convert_alpha()
-    back_intro_button = buttons.Button(291, 870, back_img, 1)
+    back_intro_button = buttons.Button(291, 570, back_img, 1)
     back_button = buttons.Button(200, 850, back_img, 1)
     next_img = pygame.image.load("pygame/images/next.png").convert_alpha()
-    next_intro_button = buttons.Button(395, 870, next_img, 1)
+    next_intro_button = buttons.Button(395, 570, next_img, 1)
     next_button = buttons.Button(279, 850, next_img, 1)
     start_img = pygame.image.load("pygame/images/start_80px.png").convert_alpha()
     start_button = buttons.Button(206.3, 760, start_img, 1)
@@ -153,6 +153,18 @@ def main():
     
     
     # DASS21 pages
+    # Initialize questionnaire images
+    dass21List = load_questionnaire_images("pygame/images/Dass21_questionnaires", "dass21", 21)
+    responses = [-1] * len(dass21List) # Initialize responses list
+    current_question_index = 0
+
+    current_page = 0
+    question_printed = False
+    questionnaire_finished = False
+    results_printed = False
+    show_error_message = False
+    error_message = None 
+    
 
     # DASS42 Pages
     # Initialize questionnaire images
@@ -217,19 +229,105 @@ def main():
 
         # DASS introduction
         elif current_page == 4:
-            #screen.blit(dass21_intro, (0, 0))
+            screen.blit(dass21_intro, (0, 0))
             if start_button.draw(screen):
                 print("DASS introduction - Button clicked")  # Debug print
                 current_question_index = 0  # Reset the question index to start at the first question
                 current_page = 6  # Move to questionnaire page
 
+        # DASS21 questionnaire display
+        if current_page == 6:
+            if not questionnaire_finished:
+                screen.blit(dass21List[current_question_index], (0,0))
+                handle_questionnaire(screen, current_question_index, responses, dass21List)
+                if not question_printed:
+                    print(f"Displaying Question {current_question_index + 1}/{len(dass21List)}")
+                    question_printed = True
+
+            if respones0_button.draw(screen):
+                responses[current_question_index] = 0
+                if current_question_index < len(dass21List) - 1:
+                    current_question_index += 1
+                    show_error_message = False
+                    question_printed = False  # Reset flag here
+                    print("responses = 0")  # Debug print
+                else:
+                    questionnaire_finished = True
+
+            if respones1_button.draw(screen):
+                responses[current_question_index] = 1
+                if current_question_index < len(dass21List) - 1:
+                    current_question_index += 1
+                    show_error_message = False
+                    question_printed = False  # Reset flag here
+                    print("responses = 1")  # Debug print
+                else:
+                    questionnaire_finished = True
+
+            if respones2_button.draw(screen):
+                responses[current_question_index] = 2
+                if current_question_index < len(dass21List) - 1:
+                    current_question_index += 1
+                    show_error_message = False
+                    question_printed = False  # Reset flag here
+                    print("responses = 2")  # Debug print
+                else:
+                    questionnaire_finished = True
+
+            if respones3_button.draw(screen):
+                responses[current_question_index] = 3
+                if current_question_index < len(dass21List) - 1:
+                    current_question_index += 1
+                    show_error_message = False
+                    question_printed = False  # Reset flag here
+                    print("responses = 3")  # Debug print
+                else:
+                    questionnaire_finished = True
+
+            # Button for navigating pages
+            if back_button.draw(screen):
+                if current_question_index > 0:
+                    current_question_index -= 1  # Move back to the previous question
+                    question_printed = False  # Reset flag here
+                    print("Back Button clicked")  # Debug print
+            if next_button.draw(screen):
+                print("Next Button clicked")  # Debug print
+                if responses[current_question_index] == -1:
+                    if not error_message:
+                        error_message = font.render("Please select an option to continue.", True, (255, 0, 0))
+                    show_error_message = True
+                else:
+                    show_error_message = False
+                    if current_question_index < len(dass21List) - 1:
+                        current_question_index += 1
+                        question_printed = False  # Ensuring we reset this to allow re-printing question display
+                    else:
+                        questionnaire_finished = True
+            if show_error_message and error_message:
+                screen.blit(error_message, (55, 250))
+
+        if questionnaire_finished == True:
+            screen.blit(result_page, (0, 0))
+            
+            # Display a static text on the result screen
+            textString = "Here are your results:"
+            ending_text = font.render(textString, True, (0, 0, 0))
+            screen.blit(ending_text, (50, 100))
+
+            if not results_printed:
+                # Calculate and display the scores
+                scores = calculate_dass_scores(responses, 'DASS-21')
+                print_scores(screen, scores, 'DASS-21', font)  # Correctly call print_scores
+                debug_print_scores(scores, 'DASS-21')  # Optionally print scores to console for debugging
+                results_printed = True
+
         elif current_page == 5:
-            # screen.blit(dass42_intro, (0, 0))
+            screen.blit(dass42_intro, (0, 0))
             if start_button.draw(screen):
                 print("DASS introduction - Button clicked")  # Debug print
                 current_question_index = 0  # Reset the question index to start at the first question
                 current_page = 6  # Move to questionnaire page      
-                
+
         # DASS42 questionnaire display
         if current_page == 6: 
             if not questionnaire_finished:
