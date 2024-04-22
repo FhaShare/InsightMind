@@ -147,8 +147,8 @@ def main():
     responses = display_questions_and_collect_responses(questions_list)
     scores = calculate_dass_scores(responses, version)
     print_scores(scores, version)
-    # depression_score, anxiety_score, stress_score = calculate_dass_scores(responses, version)
-    # make_radar_chart("Results",depression_score, anxiety_score, stress_score)
+    depression_score, anxiety_score, stress_score = calculate_dass_scores(responses, version)
+    make_radar_chart("Results",depression_score, anxiety_score, stress_score)
     
     print("\nPlease remember, this tool is not a diagnostic tool. If you are concerned about your mental health, please seek professional advice.")
 
