@@ -113,11 +113,11 @@ def main():
     main_button = buttons.Button(65, 474.8, mainButton_img, 1)
         # Button for navigating pages
     back_img = pygame.image.load("pygame/images/back.png").convert_alpha()
-    back_intro_button = buttons.Button(291, 860, back_img, 1)
-    back_button = buttons.Button(100, 835, back_img, 1)
+    back_intro_button = buttons.Button(291, 870, back_img, 1)
+    back_button = buttons.Button(200, 850, back_img, 1)
     next_img = pygame.image.load("pygame/images/next.png").convert_alpha()
-    next_intro_button = buttons.Button(395, 860, next_img, 1)
-    next_button = buttons.Button(379, 835, next_img, 1)
+    next_intro_button = buttons.Button(395, 870, next_img, 1)
+    next_button = buttons.Button(279, 850, next_img, 1)
     start_img = pygame.image.load("pygame/images/start_80px.png").convert_alpha()
     start_button = buttons.Button(206.3, 760, start_img, 1)
         # Button on DassMenu page
@@ -127,13 +127,13 @@ def main():
     dass42_button = buttons.Button(140, 790, dass42_img, 1)
         # Button for Responses
     respones0_img = pygame.image.load("pygame/images/response0.png").convert_alpha()
-    respones0_button = buttons.Button(124, 450, respones0_img, 1)
+    respones0_button = buttons.Button(124, 420, respones0_img, 1)
     respones1_img = pygame.image.load("pygame/images/response1.png").convert_alpha()
-    respones1_button = buttons.Button(124, 550, respones1_img, 1)
+    respones1_button = buttons.Button(124, 520, respones1_img, 1)
     respones2_img = pygame.image.load("pygame/images/response2.png").convert_alpha()
-    respones2_button = buttons.Button(124, 650, respones2_img, 1)
+    respones2_button = buttons.Button(124, 620, respones2_img, 1)
     respones3_img = pygame.image.load("pygame/images/response3.png").convert_alpha()
-    respones3_button = buttons.Button(124, 750, respones3_img, 1)
+    respones3_button = buttons.Button(124, 720, respones3_img, 1)
     
     # DASS21 pages
 
@@ -145,6 +145,11 @@ def main():
 
     current_page = 0
     questionnaire_finished = False
+    # For Debug print
+    results_printed = False
+    question_printed = False
+    show_error_message = False
+    error_message = None 
 
     running = True
     while running:
@@ -197,7 +202,6 @@ def main():
         # DASS introduction
         elif current_page == 4:
             #screen.blit(dass21_intro, (0, 0))
-
             if start_button.draw(screen):
                 print("DASS introduction - Button clicked")  # Debug print
                 current_question_index = 0  # Reset the question index to start at the first question
@@ -215,12 +219,17 @@ def main():
             if not questionnaire_finished:
                 screen.blit(dass42List[current_question_index], (0, 0))
                 handle_questionnaire(screen, current_question_index, responses, dass42List) 
-                print(f"Displaying Question {current_question_index + 1}/{len(dass42List)}")
-
+                if not question_printed:
+                    print(f"Displaying Question {current_question_index + 1}/{len(dass42List)}")
+                    question_printed = True
+        
             if respones0_button.draw(screen):
                 responses[current_question_index] = 0
                 if current_question_index < len(dass42List) - 1:
                     current_question_index += 1
+                    show_error_message = False
+                    question_printed = False  # Reset flag here
+                    print("responses = 0")  # Debug print
                 else:
                     questionnaire_finished = True
 
@@ -228,13 +237,19 @@ def main():
                 responses[current_question_index] = 1
                 if current_question_index < len(dass42List) - 1:
                     current_question_index += 1
+                    show_error_message = False
+                    question_printed = False  # Reset flag here
+                    print("responses = 1")  # Debug print
                 else:
                     questionnaire_finished = True
 
             if respones2_button.draw(screen):
-                responses[current_question_index] = 2
+                responses[current_question_index] = 2               
                 if current_question_index < len(dass42List) - 1:
                     current_question_index += 1
+                    show_error_message = False
+                    question_printed = False  # Reset flag here
+                    print("responses = 2")  # Debug print
                 else:
                     questionnaire_finished = True
 
@@ -242,24 +257,33 @@ def main():
                 responses[current_question_index] = 3
                 if current_question_index < len(dass42List) - 1:
                     current_question_index += 1
+                    show_error_message = False
+                    question_printed = False  # Reset flag here
+                    print("responses = 3")  # Debug print
                 else:
                     questionnaire_finished = True
 
+            # Button for navigating pages
             if back_button.draw(screen):
-                print("Back Button clicked")  # Debug print
                 if current_question_index > 0:
-                    current_question_index -= 1 # Move back to the previous pages
-
+                    current_question_index -= 1  # Move back to the previous question
+                    question_printed = False  # Reset flag here
+                    print("Back Button clicked")  # Debug print
             if next_button.draw(screen):
                 print("Next Button clicked")  # Debug print
                 if responses[current_question_index] == -1:
-                    error_message = font.render("Please select an option to continue.", True, (255, 0, 0))
-                    screen.blit(error_message, (100, 900))
-                elif current_question_index < len(dass42List) - 1:
-                    current_question_index += 1 # Move for to the previous pages
+                    if not error_message:
+                        error_message = font.render("Please select an option to continue.", True, (255, 0, 0))
+                    show_error_message = True
                 else:
-                    questionnaire_finished = True
-
+                    show_error_message = False
+                    if current_question_index < len(dass42List) - 1:
+                        current_question_index += 1
+                        question_printed = False  # Ensuring we reset this to allow re-printing question display
+                    else:
+                        questionnaire_finished = True
+            if show_error_message and error_message:
+                screen.blit(error_message, (55, 250))
 
         if questionnaire_finished == True:
             screen.blit(result_page, (0, 0))
@@ -270,19 +294,41 @@ def main():
             ending_text = font.render(textString, True, (0, 0, 0))
             
             screen.blit(ending_text, (50, 290))
-            print(responses)
+            if not results_printed:
+                print("Responses:", responses)  # Print responses only once
+                version = 'DASS-42'
+                depression_score, anxiety_score, stress_score = calculate_dass_scores(responses, version)
+                
+                # Debug print the scores
+                print("Depression Score:", depression_score)
+                print("Anxiety Score:", anxiety_score)
+                print("Stress Score:", stress_score)
+
+                # You can also display these scores on the screen using pygame's font rendering
+                depression_text = f"Depression: {depression_score}"
+                anxiety_text = f"Anxiety: {anxiety_score}"
+                stress_text = f"Stress: {stress_score}"
+
+                depression_surf = font.render(depression_text, True, (255, 255, 255))
+                anxiety_surf = font.render(anxiety_text, True, (255, 255, 255))
+                stress_surf = font.render(stress_text, True, (255, 255, 255))
+
+                # Position and draw these surfaces on the screen
+                screen.blit(depression_surf, (50, 320))
+                screen.blit(anxiety_surf, (50, 350))
+                screen.blit(stress_surf, (50, 380))
+
+                results_printed = True  # Set the flag to True after printing
             
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-
+        
         pygame.display.update()
-        pygame.display.flip()
         clock.tick(60)
 
     pygame.quit()
-
 
 if __name__ == "__main__":
     main()
