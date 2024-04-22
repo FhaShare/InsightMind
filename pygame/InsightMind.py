@@ -55,28 +55,42 @@ def interpret_scores(score, category):
             return labels[i]
     return labels[-1]
 
+def debug_print_scores(scores, version):
+    depression_score, anxiety_score, stress_score = scores
+    print("\nYour Scores:")
+    print(f"Depression: {depression_score} ({interpret_scores(depression_score, 'Depression')})")
+    print(f"Anxiety: {anxiety_score} ({interpret_scores(anxiety_score, 'Anxiety')})")
+    print(f"Stress: {stress_score} ({interpret_scores(stress_score, 'Stress')})")
+
 def print_scores(screen, scores, version, font):
     depression_score, anxiety_score, stress_score = scores
+    print("Printing Scores:")  # Debug statement
+    print(f"Depression: {depression_score}, Anxiety: {anxiety_score}, Stress: {stress_score}")
     
     # Use the interpret_scores function to get labels
     depression_label = interpret_scores(depression_score, 'Depression')
     anxiety_label = interpret_scores(anxiety_score, 'Anxiety')
     stress_label = interpret_scores(stress_score, 'Stress')
     
+    print(f"Labels - Depression: {depression_label}, Anxiety: {anxiety_label}, Stress: {stress_label}")  # Debug
+
     # Render the score texts
     depression_text = f"Depression: {depression_score} ({depression_label})"
     anxiety_text = f"Anxiety: {anxiety_score} ({anxiety_label})"
     stress_text = f"Stress: {stress_score} ({stress_label})"
     
     # Create surfaces for each score
-    depression_surf = font.render(depression_text, True, (255, 255, 255))
-    anxiety_surf = font.render(anxiety_text, True, (255, 255, 255))
-    stress_surf = font.render(stress_text, True, (255, 255, 255))
+    depression_surf = font.render(depression_text, True, (255, 0, 0))  # Changed color to red for visibility
+    anxiety_surf = font.render(anxiety_text, True, (0, 255, 0))  # Changed color to green for visibility
+    stress_surf = font.render(stress_text, True, (0, 0, 255))  # Changed color to blue for visibility
     
     # Position and draw these surfaces on the screen
     screen.blit(depression_surf, (50, 200))
     screen.blit(anxiety_surf, (50, 250))
     screen.blit(stress_surf, (50, 300))
+    
+    pygame.display.update()  # Ensure the display is updated to show changes
+
 
 def main():
     pygame.init()
@@ -134,6 +148,9 @@ def main():
     respones2_button = buttons.Button(124, 620, respones2_img, 1)
     respones3_img = pygame.image.load("pygame/images/response3.png").convert_alpha()
     respones3_button = buttons.Button(124, 720, respones3_img, 1)
+
+    # Icons
+    
     
     # DASS21 pages
 
@@ -144,10 +161,9 @@ def main():
     current_question_index = 0
 
     current_page = 0
-    questionnaire_finished = False
-    # For Debug print
-    results_printed = False
     question_printed = False
+    questionnaire_finished = False
+    results_printed = False
     show_error_message = False
     error_message = None 
 
@@ -287,43 +303,24 @@ def main():
 
         if questionnaire_finished == True:
             screen.blit(result_page, (0, 0))
-
-            # print result onto screen logic
-            textString = "This is where my result would be"
-
+            
+            # Display a static text on the result screen
+            textString = "Here are your results:"
             ending_text = font.render(textString, True, (0, 0, 0))
-            
-            screen.blit(ending_text, (50, 290))
+            screen.blit(ending_text, (50, 100))
+
             if not results_printed:
-                print("Responses:", responses)  # Print responses only once
-                version = 'DASS-42'
-                depression_score, anxiety_score, stress_score = calculate_dass_scores(responses, version)
-                
-                # Debug print the scores
-                print("Depression Score:", depression_score)
-                print("Anxiety Score:", anxiety_score)
-                print("Stress Score:", stress_score)
+                # Calculate and display the scores
+                scores = calculate_dass_scores(responses, 'DASS-42')
+                print_scores(screen, scores, 'DASS-42', font)  # Correctly call print_scores
+                debug_print_scores(scores, 'DASS-42')  # Optionally print scores to console for debugging
+                results_printed = True
 
-                # You can also display these scores on the screen using pygame's font rendering
-                depression_text = f"Depression: {depression_score}"
-                anxiety_text = f"Anxiety: {anxiety_score}"
-                stress_text = f"Stress: {stress_score}"
-
-                depression_surf = font.render(depression_text, True, (255, 255, 255))
-                anxiety_surf = font.render(anxiety_text, True, (255, 255, 255))
-                stress_surf = font.render(stress_text, True, (255, 255, 255))
-
-                # Position and draw these surfaces on the screen
-                screen.blit(depression_surf, (50, 320))
-                screen.blit(anxiety_surf, (50, 350))
-                screen.blit(stress_surf, (50, 380))
-
-                results_printed = True  # Set the flag to True after printing
             
-
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+        
         
         pygame.display.update()
         clock.tick(60)
