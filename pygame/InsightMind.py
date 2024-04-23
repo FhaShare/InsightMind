@@ -386,57 +386,57 @@ def main():
                 else:
                     questionnaire_finished = True
 
-                if respones1_button.draw(screen):
-                    dass42_responses[current_question_index] = 1
+            if respones1_button.draw(screen):
+                dass42_responses[current_question_index] = 1
+                if current_question_index < len(dass42List) - 1:
+                    current_question_index += 1
+                    show_error_message = False
+                    question_printed = False  # Reset flag here
+                    print("responses = 1")  # Debug print
+                else:
+                    questionnaire_finished = True
+
+            if respones2_button.draw(screen):
+                dass42_responses[current_question_index] = 2               
+                if current_question_index < len(dass42List) - 1:
+                    current_question_index += 1
+                    show_error_message = False
+                    question_printed = False  # Reset flag here
+                    print("responses = 2")  # Debug print
+                else:
+                    questionnaire_finished = True
+
+            if respones3_button.draw(screen):
+                dass42_responses[current_question_index] = 3
+                if current_question_index < len(dass42List) - 1:
+                    current_question_index += 1
+                    show_error_message = False
+                    question_printed = False  # Reset flag here
+                    print("responses = 3")  # Debug print
+                else:
+                    questionnaire_finished = True
+
+            # Button for navigating pages
+            if back_button.draw(screen):
+                if current_question_index > 0:
+                    current_question_index -= 1  # Move back to the previous question
+                    question_printed = False  # Reset flag here
+                    print("Back Button clicked")  # Debug print
+            if next_button.draw(screen):
+                print("Next Button clicked")  # Debug print
+                if dass42_responses[current_question_index] == -1:
+                    if not error_message:
+                        error_message = font.render("Please select an option to continue.", True, (255, 0, 0))
+                        show_error_message = True
+                    else:
+                        show_error_message = False
                     if current_question_index < len(dass42List) - 1:
                         current_question_index += 1
-                        show_error_message = False
-                        question_printed = False  # Reset flag here
-                        print("responses = 1")  # Debug print
+                        question_printed = False  # Ensuring we reset this to allow re-printing question display
                     else:
                         questionnaire_finished = True
-
-                if respones2_button.draw(screen):
-                    dass42_responses[current_question_index] = 2               
-                    if current_question_index < len(dass42List) - 1:
-                        current_question_index += 1
-                        show_error_message = False
-                        question_printed = False  # Reset flag here
-                        print("responses = 2")  # Debug print
-                    else:
-                        questionnaire_finished = True
-
-                if respones3_button.draw(screen):
-                    dass42_responses[current_question_index] = 3
-                    if current_question_index < len(dass42List) - 1:
-                        current_question_index += 1
-                        show_error_message = False
-                        question_printed = False  # Reset flag here
-                        print("responses = 3")  # Debug print
-                    else:
-                        questionnaire_finished = True
-
-                    # Button for navigating pages
-                    if back_button.draw(screen):
-                        if current_question_index > 0:
-                            current_question_index -= 1  # Move back to the previous question
-                            question_printed = False  # Reset flag here
-                            print("Back Button clicked")  # Debug print
-                    if next_button.draw(screen):
-                        print("Next Button clicked")  # Debug print
-                        if dass42_responses[current_question_index] == -1:
-                            if not error_message:
-                                error_message = font.render("Please select an option to continue.", True, (255, 0, 0))
-                            show_error_message = True
-                        else:
-                            show_error_message = False
-                            if current_question_index < len(dass42List) - 1:
-                                current_question_index += 1
-                                question_printed = False  # Ensuring we reset this to allow re-printing question display
-                            else:
-                                questionnaire_finished = True
-                    if show_error_message and error_message:
-                        screen.blit(error_message, (55, 250))
+            if show_error_message and error_message:
+                screen.blit(error_message, (55, 250))
 
         if questionnaire_finished == True:
             screen.blit(result_page, (0, 0))
