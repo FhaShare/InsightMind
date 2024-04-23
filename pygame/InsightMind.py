@@ -98,6 +98,48 @@ def display_icons(screen, scores, icons):
     screen.blit(anxiety_icon, (100, 500))
     screen.blit(stress_icon, (100, 600))
 
+def load_result():
+    result = {
+        "Depression": {
+            "Normal": pygame.image.load("pygame/images/Depression/Depression_Normal.png").convert_alpha(),
+            "Mild": pygame.image.load("pygame/images/Depression/Depression_Mild.png").convert_alpha(),
+            "Moderate": pygame.image.load("pygame/images/Depression/Depression_Moderate.png").convert_alpha(),
+            "Severe": pygame.image.load("pygame/images/Depression/Depression_Severe.png").convert_alpha(),
+            "Extremely Severe": pygame.image.load("pygame/images/Depression/Depression_ExtremelySevere.png").convert_alpha()
+        },
+        "Anxiety": {
+            "Normal": pygame.image.load("pygame/images/Anxiety/Anxiety_Normal.png").convert_alpha(),
+            "Mild": pygame.image.load("pygame/images/Anxiety/Anxiety_Mild.png").convert_alpha(),
+            "Moderate": pygame.image.load("pygame/images/Anxiety/Anxiety_Moderate.png").convert_alpha(),
+            "Severe": pygame.image.load("pygame/images/Anxiety/Anxiety_Severe.png").convert_alpha(),
+            "Extremely Severe": pygame.image.load("pygame/images/Anxiety/Anxiety_ExtremelySevere.png").convert_alpha()
+        },
+        "Stress": {
+            "Normal": pygame.image.load("pygame/images/Stress/Stress_Normal.png").convert_alpha(),
+            "Mild": pygame.image.load("pygame/images/Stress/Stress_Mild.png").convert_alpha(),
+            "Moderate": pygame.image.load("pygame/images/Stress/Stress_Moderate.png").convert_alpha(),
+            "Severe": pygame.image.load("pygame/images/Stress/Stress_Severe.png").convert_alpha(),
+            "Extremely Severe": pygame.image.load("pygame/images/Stress/Stress_ExtremelySevere.png").convert_alpha()
+        }
+    }
+    return result
+
+def display_result(screen, scores, result):
+    depression_score, anxiety_score, stress_score = scores
+    depression_label = interpret_scores(depression_score, 'Depression')
+    anxiety_label = interpret_scores(anxiety_score, 'Anxiety')
+    stress_label = interpret_scores(stress_score, 'Stress')
+
+    depression_result = result['Depression'][depression_label]
+    anxiety_result = result['Anxiety'][anxiety_label]
+    stress_result = result['Stress'][stress_label]
+
+    screen.blit(depression_result, (0, 0))
+    screen.blit(anxiety_result, (0, 0))
+    screen.blit(stress_result, (0, 0))
+
+
+
 def debug_print_scores(scores, version):
     depression_score, anxiety_score, stress_score = scores
     print(f"\nYour Scores:", version)
@@ -174,7 +216,8 @@ def main():
     screen = pygame.display.set_mode((534, 950))
     pygame.font.init()  # Initialize the font module
     font = pygame.font.Font(None, 36)  # Global font object
-    #font2 = pygame.font.Font("incAssests/fonts/SansitaOne.tff",25)
+    font2 = pygame.font.Font("pygame/font/LoveDays-2v7Oe.ttf",25)
+    font3 = pygame.font.Font("pygame/font/LoveDays-2v7Oe.ttf",30)
 
 
     pygame.display.set_caption("InsightMind")
@@ -196,6 +239,7 @@ def main():
         # Page7: questionnaire (Use None for dynamic content page)
         # Page8: Result
     result_page = pygame.image.load('pygame/images/result.png').convert()
+    #graph_page = pyame....
         # List of pages 
     pages = [main_menu, intro_page1, intro_page2, dass_menu, dass21_intro, dass42_intro, result_page]
 
@@ -227,27 +271,8 @@ def main():
     respones3_img = pygame.image.load("pygame/images/response3.png").convert_alpha()
     respones3_button = buttons.Button(124, 720, respones3_img, 1)
 
-    # # Icons
     icons = load_icons()
-    #     # Depression
-    # depression_normal_img = pygame.image.load("pygame/images/Depression/Depression_Normal.png").convert_alpha()
-    # depression_mild_img = pygame.image.load("pygame/images/Depression/Depression_Mild.png").convert_alpha()
-    # depression_moderate_img = pygame.image.load("pygame/images/Depression/Depression_Moderate.png").convert_alpha()
-    # depression_severe_img = pygame.image.load("pygame/images/Depression/Depression_Severe.png").convert_alpha()
-    # depression_extremely_severe_img = pygame.image.load("pygame/images/Depression/Depression_ExtremelySevere.png").convert_alpha()
-    #     # Anxiety
-    # anxiety_normal_img = pygame.image.load("pygame/images/Anxiety/Anxiety_Normal.png").convert_alpha()
-    # anxiety_mild_img = pygame.image.load("pygame/images/Anxiety/Anxiety_Mild.png").convert_alpha()
-    # anxiety_moderate_img = pygame.image.load("pygame/images/Anxiety/Anxiety_Moderate.png").convert_alpha()
-    # anxiety_severe_img = pygame.image.load("pygame/images/Anxiety/Anxiety_Severe.png").convert_alpha()
-    # anxiety_extremely_severe_img = pygame.image.load("pygame/images/Anxiety/Anxiety_ExtremelySevere.png").convert_alpha()
-    #     # Stress
-    # stress_normal_img = pygame.image.load("pygame/images/Stress/Stress_Normal.png").convert_alpha()
-    # stress_mild_img = pygame.image.load("pygame/images/Stress/Stress_Mild.png").convert_alpha()
-    # stress_moderate_img = pygame.image.load("pygame/images/Stress/Stress_Moderate.png").convert_alpha()
-    # stress_severe_img = pygame.image.load("pygame/images/Stress/Stress_Severe.png").convert_alpha()
-    # stress_extremely_severe_img = pygame.image.load("pygame/images/Stress/Stress_ExtremelySevere.png").convert_alpha()
-    
+   
     # DASS21 pages
     dass21List = load_questionnaire_images("pygame/images/Dass21_questionnaires", "dass21", 21)
     dass21_responses = [-1] * len(dass21List)  # Initialize responses list
@@ -384,7 +409,7 @@ def main():
                 print("Next Button clicked")  # Debug print
                 if dass21_responses[current_question_index] == -1:
                     if not error_message:
-                        error_message = font.render("Please select an option to continue.", True, (255, 0, 0))
+                        error_message = font2.render("Please select an option to continue.", True, (255, 0, 0))
                         show_error_message = True
                 else:
                     show_error_message = False
@@ -462,7 +487,7 @@ def main():
                 print("Next Button clicked")  # Debug print
                 if dass42_responses[current_question_index] == -1:
                     if not error_message:
-                        error_message = font.render("Please select an option to continue.", True, (255, 0, 0))
+                        error_message = font2.render("Please select an option to continue.", True, (255, 0, 0))
                         show_error_message = True
                     else:
                         show_error_message = False
@@ -478,9 +503,9 @@ def main():
             screen.blit(result_page, (0, 0))         
 
             # Display a static text on the result screen
-            textString = "Here are your results:"
-            ending_text = font.render(textString, True, (0, 0, 0))
-            screen.blit(ending_text, (50, 100))
+            textString = "Here are your results"
+            headle_text = font3.render(textString, True, (0, 0, 0))
+            screen.blit(headle_text, (130, 100))
             scores = calculate_dass_scores(responses, version)
             # make_radar_chart(screen, "DASS Results", scores, font)
             display_icons(screen, scores, icons)
