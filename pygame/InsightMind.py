@@ -60,11 +60,11 @@ def interpret_scores(score, category):
 def load_icons():
     icons = {
         "Depression": {
-            "Normal": pygame.image.load("pygame/images/Depression/Depression_Normal.png").convert_alpha(),
-            "Mild": pygame.image.load("pygame/images/Depression/Depression_Mild.png").convert_alpha(),
-            "Moderate": pygame.image.load("pygame/images/Depression/Depression_Moderate.png").convert_alpha(),
-            "Severe": pygame.image.load("pygame/images/Depression/Depression_Severe.png").convert_alpha(),
-            "Extremely Severe": pygame.image.load("pygame/images/Depression/Depression_ExtremelySevere.png").convert_alpha()
+            "Normal": pygame.image.load("pygame/images/Depression/sample.png").convert_alpha(),
+            "Mild": pygame.image.load("pygame/images/Depression/sample.png").convert_alpha(),
+            "Moderate": pygame.image.load("pygame/images/Depression/sample.png").convert_alpha(),
+            "Severe": pygame.image.load("pygame/images/Depression/sample.png").convert_alpha(),
+            "Extremely Severe": pygame.image.load("pygame/images/Depression/sample.png").convert_alpha()
         },
         "Anxiety": {
             "Normal": pygame.image.load("pygame/images/Anxiety/Anxiety_Normal.png").convert_alpha(),
@@ -94,7 +94,7 @@ def display_icons(screen, scores, icons):
     stress_icon = icons['Stress'][stress_label]
 
     # Icon positions might need to be adjusted based on your layout
-    screen.blit(depression_icon, (100, 400))
+    screen.blit(depression_icon, (0, 0))
     screen.blit(anxiety_icon, (100, 500))
     screen.blit(stress_icon, (100, 600))
 
@@ -109,15 +109,10 @@ def print_scores(screen, scores, version, font, icons):
 
     depression_score, anxiety_score, stress_score = scores
     
-    # Use the interpret_scores function to get labels
-    depression_label = interpret_scores(depression_score, 'Depression')
-    anxiety_label = interpret_scores(anxiety_score, 'Anxiety')
-    stress_label = interpret_scores(stress_score, 'Stress')
-    
     # Render the score texts
-    depression_text = f"Depression: {depression_score} ({depression_label})"
-    anxiety_text = f"Anxiety: {anxiety_score} ({anxiety_label})"
-    stress_text = f"Stress: {stress_score} ({stress_label})"
+    depression_text = f"{depression_score}"
+    anxiety_text = f"{anxiety_score}"
+    stress_text = f"{stress_score}"
     
     # Create surfaces for each score
     depression_surf = font.render(depression_text, True, (0, 0, 0)) 
@@ -127,9 +122,9 @@ def print_scores(screen, scores, version, font, icons):
     #if depression_label == "severe":
         #screen.blit(#icon, (30, 200))
     # Position and draw these surfaces on the screen
-    screen.blit(depression_surf, (50, 200))
-    screen.blit(anxiety_surf, (50, 250))
-    screen.blit(stress_surf, (50, 300))
+    screen.blit(depression_surf, (25, 150))
+    screen.blit(anxiety_surf, (50, 750))
+    screen.blit(stress_surf, (50, 800))
     
     
     pygame.display.update()  # Ensure the display is updated to show changes
