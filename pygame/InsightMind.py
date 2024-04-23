@@ -57,34 +57,72 @@ def interpret_scores(score, category):
             return labels[i]
     return labels[-1]
 
+def load_icons():
+    icons = {
+        "Depression": {
+            "Normal": pygame.image.load("pygame/images/Depression/Depression_Normal.png").convert_alpha(),
+            "Mild": pygame.image.load("pygame/images/Depression/Depression_Mild.png").convert_alpha(),
+            "Moderate": pygame.image.load("pygame/images/Depression/Depression_Moderate.png").convert_alpha(),
+            "Severe": pygame.image.load("pygame/images/Depression/Depression_Severe.png").convert_alpha(),
+            "Extremely Severe": pygame.image.load("pygame/images/Depression/Depression_ExtremelySevere.png").convert_alpha()
+        },
+        "Anxiety": {
+            "Normal": pygame.image.load("pygame/images/Anxiety/Anxiety_Normal.png").convert_alpha(),
+            "Mild": pygame.image.load("pygame/images/Anxiety/Anxiety_Mild.png").convert_alpha(),
+            "Moderate": pygame.image.load("pygame/images/Anxiety/Anxiety_Moderate.png").convert_alpha(),
+            "Severe": pygame.image.load("pygame/images/Anxiety/Anxiety_Severe.png").convert_alpha(),
+            "Extremely Severe": pygame.image.load("pygame/images/Anxiety/Anxiety_ExtremelySevere.png").convert_alpha()
+        },
+        "Stress": {
+            "Normal": pygame.image.load("pygame/images/Stress/Stress_Normal.png").convert_alpha(),
+            "Mild": pygame.image.load("pygame/images/Stress/Stress_Mild.png").convert_alpha(),
+            "Moderate": pygame.image.load("pygame/images/Stress/Stress_Moderate.png").convert_alpha(),
+            "Severe": pygame.image.load("pygame/images/Stress/Stress_Severe.png").convert_alpha(),
+            "Extremely Severe": pygame.image.load("pygame/images/Stress/Stress_ExtremelySevere.png").convert_alpha()
+        }
+    }
+    return icons
+
+def display_icons(screen, scores, icons):
+    depression_score, anxiety_score, stress_score = scores
+    depression_label = interpret_scores(depression_score, 'Depression')
+    anxiety_label = interpret_scores(anxiety_score, 'Anxiety')
+    stress_label = interpret_scores(stress_score, 'Stress')
+
+    depression_icon = icons['Depression'][depression_label]
+    anxiety_icon = icons['Anxiety'][anxiety_label]
+    stress_icon = icons['Stress'][stress_label]
+
+    # Icon positions might need to be adjusted based on your layout
+    screen.blit(depression_icon, (100, 400))
+    screen.blit(anxiety_icon, (100, 500))
+    screen.blit(stress_icon, (100, 600))
+
 def debug_print_scores(scores, version):
     depression_score, anxiety_score, stress_score = scores
-    print("\nYour Scores:")
+    print(f"\nYour Scores:", version)
     print(f"Depression: {depression_score} ({interpret_scores(depression_score, 'Depression')})")
     print(f"Anxiety: {anxiety_score} ({interpret_scores(anxiety_score, 'Anxiety')})")
     print(f"Stress: {stress_score} ({interpret_scores(stress_score, 'Stress')})")
 
-def print_scores(screen, scores, version, font):
+def print_scores(screen, scores, version, font, icons):
+
     depression_score, anxiety_score, stress_score = scores
-    print("Printing Scores:")  # Debug statement
-    print(f"Depression: {depression_score}, Anxiety: {anxiety_score}, Stress: {stress_score}")
     
     # Use the interpret_scores function to get labels
     depression_label = interpret_scores(depression_score, 'Depression')
     anxiety_label = interpret_scores(anxiety_score, 'Anxiety')
     stress_label = interpret_scores(stress_score, 'Stress')
     
-    print(f"Labels - Depression: {depression_label}, Anxiety: {anxiety_label}, Stress: {stress_label}")  # Debug
-
     # Render the score texts
     depression_text = f"Depression: {depression_score} ({depression_label})"
     anxiety_text = f"Anxiety: {anxiety_score} ({anxiety_label})"
     stress_text = f"Stress: {stress_score} ({stress_label})"
     
     # Create surfaces for each score
-    depression_surf = font.render(depression_text, True, (255, 0, 0))  # Changed color to red for visibility
-    anxiety_surf = font.render(anxiety_text, True, (0, 255, 0))  # Changed color to green for visibility
-    stress_surf = font.render(stress_text, True, (0, 0, 255))  # Changed color to blue for visibility
+    depression_surf = font.render(depression_text, True, (0, 0, 0)) 
+    anxiety_surf = font.render(anxiety_text, True, (0, 0, 0)) 
+    stress_surf = font.render(stress_text, True, (0, 0, 0)) 
     
     #if depression_label == "severe":
         #screen.blit(#icon, (30, 200))
@@ -93,58 +131,40 @@ def print_scores(screen, scores, version, font):
     screen.blit(anxiety_surf, (50, 250))
     screen.blit(stress_surf, (50, 300))
     
+    
     pygame.display.update()  # Ensure the display is updated to show changes
 
-# def make_radar_chart(screen, name, depression_score, anxiety_score, stress_score):
-#     # Define markers and attribute labels for the triangular radar chart
-#     markers = [1, 2, 3, 4, 5]
+# def make_radar_chart(screen, name, scores, font):
+#     # Unpack the scores
+#     depression_score, anxiety_score, stress_score = scores
+
+#     # Define attribute labels for the radar chart
 #     attribute_labels = ["Normal", "Mild", "Moderate", "Severe", "Extremely Severe"]
-#     labels = np.array(attribute_labels)
-    
-#     # Define angles for the triangular radar chart
-#     angles = [0, np.pi/2, 2 * np.pi/2]
-    
-#     # Normalize scores to range [0, 1]
-#     depression_norm = depression_score / max(markers)
-#     anxiety_norm = anxiety_score / max(markers)
-#     stress_norm = stress_score / max(markers)
-    
-#     # Create triangular radar chart data
-#     stats = [depression_norm, anxiety_norm, stress_norm, depression_norm]  # Close the triangular shape
-    
-#     # Plot the triangular radar chart
-#     color = (255, 255, 255)  # White color for lines and area fill
-#     thickness = 2
-#     alpha = 128  # Transparency for the area fill
-    
-#     # Calculate points for the radar chart
-#     points = []
-#     for angle, stat in zip(angles, stats):
-#         x = 250 * stat * np.cos(angle) + 300
-#         y = 250 * stat * np.sin(angle) + 300
-#         points.append((x, y))
-    
-#     # Draw the radar chart lines
-#     for i in range(len(points) - 1):
-#         pygame.draw.line(screen, color, points[i], points[i+1], thickness)
-#     pygame.draw.line(screen, color, points[-1], points[0], thickness)
-    
-#     # Fill the area of the radar chart
-#     pygame.draw.polygon(screen, (color[0], color[1], color[2], alpha), points)
-    
-#     # Set axis labels and markers
-#     font = pygame.font.SysFont(None, 24)
-#     for angle, label in zip(angles, ["Depression", "Anxiety", "Stress"]):
-#         text = font.render(label, True, color)
-#         text_rect = text.get_rect(center=(300 + 250 * np.cos(angle), 300 + 250 * np.sin(angle)))
-#         screen.blit(text, text_rect)
-    
-#     # Set title
-#     title_font = pygame.font.SysFont(None, 36)
-#     title_text = title_font.render(name, True, color)
-#     screen.blit(title_text, (250, 50))
-    
-#     # Update the display
+
+#     # Assuming the maximum possible scores for normalization to range [0, 1]
+#     max_scores = [42, 42, 42]  # Max scores for Depression, Anxiety, Stress respectively
+#     norm_scores = [depression_score / max_scores[0], anxiety_score / max_scores[1], stress_score / max_scores[2]]
+
+#     # Extend scores to close the loop on the radar chart
+#     norm_scores.append(norm_scores[0])
+
+#     # Define angles for a full radar chart
+#     angles = np.linspace(0, 2 * np.pi, len(norm_scores), endpoint=False).tolist()
+
+#     # Plotting
+#     fig, ax = plt.subplots(figsize=(6, 6), subplot_kw=dict(polar=True))
+#     ax.fill(angles, norm_scores, color='red', alpha=0.25)
+#     ax.plot(angles, norm_scores, color='red', linewidth=2)  # Draw the outline of the radar chart
+#     ax.set_xticks(angles[:-1])  # Set ticks to the number of main categories
+#     ax.set_xticklabels(attribute_labels)  # Set category labels
+
+#     # Save the plot to a file, load it into pygame and draw it on the screen
+#     plt.savefig("radar_chart.png")
+#     plt.close()  # Close the plot to free up memory
+#     radar_chart_image = pygame.image.load("radar_chart.png").convert_alpha()
+#     screen.blit(radar_chart_image, (50, 150))  # Position it on the pygame screen
+
+#     # Ensure the display is updated to show the new chart
 #     pygame.display.flip()
 
 
@@ -207,10 +227,26 @@ def main():
     respones3_img = pygame.image.load("pygame/images/response3.png").convert_alpha()
     respones3_button = buttons.Button(124, 720, respones3_img, 1)
 
-    # Icons
-        # Depression
+    # # Icons
+    icons = load_icons()
+    #     # Depression
     # depression_normal_img = pygame.image.load("pygame/images/Depression/Depression_Normal.png").convert_alpha()
-    # depression_normal_img = pygame.image.load("pygame/images/Depression/Depression_Normal.png").convert_alpha()
+    # depression_mild_img = pygame.image.load("pygame/images/Depression/Depression_Mild.png").convert_alpha()
+    # depression_moderate_img = pygame.image.load("pygame/images/Depression/Depression_Moderate.png").convert_alpha()
+    # depression_severe_img = pygame.image.load("pygame/images/Depression/Depression_Severe.png").convert_alpha()
+    # depression_extremely_severe_img = pygame.image.load("pygame/images/Depression/Depression_ExtremelySevere.png").convert_alpha()
+    #     # Anxiety
+    # anxiety_normal_img = pygame.image.load("pygame/images/Anxiety/Anxiety_Normal.png").convert_alpha()
+    # anxiety_mild_img = pygame.image.load("pygame/images/Anxiety/Anxiety_Mild.png").convert_alpha()
+    # anxiety_moderate_img = pygame.image.load("pygame/images/Anxiety/Anxiety_Moderate.png").convert_alpha()
+    # anxiety_severe_img = pygame.image.load("pygame/images/Anxiety/Anxiety_Severe.png").convert_alpha()
+    # anxiety_extremely_severe_img = pygame.image.load("pygame/images/Anxiety/Anxiety_ExtremelySevere.png").convert_alpha()
+    #     # Stress
+    # stress_normal_img = pygame.image.load("pygame/images/Stress/Stress_Normal.png").convert_alpha()
+    # stress_mild_img = pygame.image.load("pygame/images/Stress/Stress_Mild.png").convert_alpha()
+    # stress_moderate_img = pygame.image.load("pygame/images/Stress/Stress_Moderate.png").convert_alpha()
+    # stress_severe_img = pygame.image.load("pygame/images/Stress/Stress_Severe.png").convert_alpha()
+    # stress_extremely_severe_img = pygame.image.load("pygame/images/Stress/Stress_ExtremelySevere.png").convert_alpha()
     
     # DASS21 pages
     dass21List = load_questionnaire_images("pygame/images/Dass21_questionnaires", "dass21", 21)
@@ -439,24 +475,29 @@ def main():
             if show_error_message and error_message:
                 screen.blit(error_message, (55, 250))
 
+<<<<<<< HEAD
         if questionnaire_finished == True:
             screen.blit(result_page, (0, 0))
             
+=======
+        if questionnaire_finished:
+            screen.blit(result_page, (0, 0))         
+
+>>>>>>> Fha
             # Display a static text on the result screen
             textString = "Here are your results:"
             ending_text = font.render(textString, True, (0, 0, 0))
             screen.blit(ending_text, (50, 100))
             scores = calculate_dass_scores(responses, version)
-            print_scores(screen, scores, version, font)  # Correctly call print_scores
-
-            # depression_score, anxiety_score, stress_score = calculate_dass_scores(responses, 'DASS-42')
-            # make_radar_chart(screen, 'DASS-42', depression_score, anxiety_score, stress_score)
-
+            # make_radar_chart(screen, "DASS Results", scores, font)
+            display_icons(screen, scores, icons)
+            print_scores(screen, scores, version, font, icons)
+            
+        
             if not results_printed:
                 # Calculate and display the scores
-                scores = calculate_dass_scores(responses, 'DASS-42')
-                print_scores(screen, scores, 'DASS-42', font)  # Correctly call print_scores
-                debug_print_scores(scores, 'DASS-42')  # Optionally print scores to console for debugging
+                print(responses)   
+                debug_print_scores(scores, version)  # Optionally print scores to console for debugging
                 results_printed = True
 
             
