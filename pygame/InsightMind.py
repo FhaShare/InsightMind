@@ -352,7 +352,6 @@ def main():
 
         # DASS21 questionnaire display
         if current_page == 6 and version == 'DASS-21': 
-            current_question_index = 0
             if not questionnaire_finished:
                 screen.blit(dass21List[current_question_index], (0, 0))
                 handle_questionnaire(screen, current_question_index, dass21_responses, dass21List) 
@@ -500,15 +499,9 @@ def main():
             if show_error_message and error_message:
                 screen.blit(error_message, (55, 250))
 
-<<<<<<< HEAD
-        if questionnaire_finished == True:
-            screen.blit(result_page, (0, 0))
-            
-=======
         if questionnaire_finished:
             screen.blit(result_page, (0, 0))         
 
->>>>>>> Fha
             # Display a static text on the result screen
             textString = "Here are your results"
             headle_text = font3.render(textString, True, (0, 0, 0))
