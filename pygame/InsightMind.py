@@ -98,6 +98,11 @@ def main():
     screen = pygame.display.set_mode((534, 950))
     pygame.font.init()  # Initialize the font module
     font = pygame.font.Font(None, 36)  # Global font object
+<<<<<<< Updated upstream
+=======
+    font2 = pygame.font.Font("pygame/font/LoveDays-2v7Oe.ttf",25)
+
+>>>>>>> Stashed changes
 
     pygame.display.set_caption("InsightMind")
 
@@ -312,8 +317,13 @@ def main():
                 print("Next Button clicked")  # Debug print
                 if responses[current_question_index] == -1:
                     if not error_message:
+<<<<<<< Updated upstream
                         error_message = font.render("Please select an option to continue.", True, (255, 0, 0))
                     show_error_message = True
+=======
+                        error_message = font2.render("Please select an option to continue.", True, (255, 0, 0))
+                        show_error_message = True
+>>>>>>> Stashed changes
                 else:
                     show_error_message = False
                     if current_question_index < len(dass21List) - 1:
