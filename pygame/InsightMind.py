@@ -59,15 +59,24 @@ def interpret_scores(score, category):
 
 def debug_print_scores(scores, version):
     depression_score, anxiety_score, stress_score = scores
-    print("\nYour Scores:")
+    print(f"\nYour Scores:", version)
     print(f"Depression: {depression_score} ({interpret_scores(depression_score, 'Depression')})")
     print(f"Anxiety: {anxiety_score} ({interpret_scores(anxiety_score, 'Anxiety')})")
     print(f"Stress: {stress_score} ({interpret_scores(stress_score, 'Stress')})")
 
 def print_scores(screen, scores, version, font):
+
     depression_score, anxiety_score, stress_score = scores
+
+    results_printed = False
+    if not results_printed:  
+        print(f"Printing Scores:", version)  # Debug statement
+        print(f"Depression: {depression_score}, Anxiety: {anxiety_score}, Stress: {stress_score}")
+        results_printed = True  # Set the flag to True after printing
+
     print("Printing Scores:")  # Debug statement
     print(f"Depression: {depression_score}, Anxiety: {anxiety_score}, Stress: {stress_score}")
+    results_printed = True  # Set the flag to True after printing
     
     # Use the interpret_scores function to get labels
     depression_label = interpret_scores(depression_score, 'Depression')
@@ -453,9 +462,9 @@ def main():
 
             if not results_printed:
                 # Calculate and display the scores
-                scores = calculate_dass_scores(responses, 'DASS-42')
-                print_scores(screen, scores, 'DASS-42', font)  # Correctly call print_scores
-                debug_print_scores(scores, 'DASS-42')  # Optionally print scores to console for debugging
+                scores = calculate_dass_scores(responses, version)
+                print_scores(screen, scores, version, font)  # Correctly call print_scores
+                debug_print_scores(scores, version)  # Optionally print scores to console for debugging
                 results_printed = True
 
             
