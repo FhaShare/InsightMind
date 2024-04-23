@@ -239,10 +239,12 @@ def main():
         # Page7: questionnaire (Use None for dynamic content page)
         # Page8: Result
     result_page = pygame.image.load('pygame/images/result.png').convert()
+    advice_page = pygame.image.load('pygame/images/advice.png').convert()
+    graph_page = pygame.image.load('pygame/images/graph.png').convert()
     #graph_page = pyame....
         # List of pages 
-    pages = [main_menu, intro_page1, intro_page2, dass_menu, dass21_intro, dass42_intro, result_page]
-
+    pages = [main_menu, intro_page1, intro_page2, dass_menu, dass21_intro, dass42_intro, result_page, advice_page, graph_page]
+    
     # Initialize buttons
         # Button on MainMenu page
     mainButton_img = pygame.image.load("pygame/images/MainButton.png").convert_alpha()
@@ -517,6 +519,25 @@ def main():
                 print(responses)   
                 debug_print_scores(scores, version)  # Optionally print scores to console for debugging
                 results_printed = True
+
+            if next_intro_button.draw(screen):
+                print("Next Button clicked")  # Debug print
+                current_page += 1  # Move for to the previous pages
+        
+        if current_page == 8 and questionnaire_finished: 
+            screen.blit(advice_page, (0, 0))
+            if back_intro_button.draw(screen):
+                print("Back Button clicked")  # Debug print
+                current_page -= 1  # Move back to the previous pages
+            if next_intro_button.draw(screen):
+                print("Next Button clicked")  # Debug print
+                current_page += 1  # Move for to the previous pages
+
+                # advice_page, graph_page
+            
+
+            
+
 
             
         for event in pygame.event.get():
