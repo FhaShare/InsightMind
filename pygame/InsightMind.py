@@ -421,7 +421,7 @@ def main():
                 if dass21_responses[current_question_index] == -1:
                     if not error_message:
                         error_message = font2.render("Please select an option to continue.", True, (255, 0, 0))
-                        show_error_message = True
+                    show_error_message = True
                 else:
                     show_error_message = False
                     if current_question_index < len(dass42List) - 1:
@@ -431,6 +431,7 @@ def main():
                         questionnaire_finished = True
             if show_error_message and error_message:
                 screen.blit(error_message, (80, 240))
+                
 
         elif current_page == 5:
             screen.blit(dass42_intro, (0, 0))
@@ -505,9 +506,9 @@ def main():
                 if dass42_responses[current_question_index] == -1:
                     if not error_message:
                         error_message = font2.render("Please select an option to continue.", True, (255, 0, 0))
-                        show_error_message = True
-                    else:
-                        show_error_message = False
+                    show_error_message = True
+                else:
+                    show_error_message = False
                     if current_question_index < len(dass42List) - 1:
                         current_question_index += 1
                         question_printed = False  # Ensuring we reset this to allow re-printing question display
