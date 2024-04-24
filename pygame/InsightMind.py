@@ -127,25 +127,25 @@ def load_result():
 def load_advice():
     advice = {
         "Depression": {
-            "Normal": pygame.image.load("pygame/images/Depression_results/Depression_results_normal.png").convert_alpha(),
-            "Mild": pygame.image.load("pygame/images/Depression_results/Depression_results_mild.png").convert_alpha(),
-            "Moderate": pygame.image.load("pygame/images/Depression_results/Depression_results_moderate.png").convert_alpha(),
-            "Severe": pygame.image.load("pygame/images/Depression_results/Depression_results_severe.png").convert_alpha(),
-            "Extremely Severe": pygame.image.load("pygame/images/Depression_results/Depression_results_extremely-severe.png").convert_alpha()
+            "Normal": pygame.image.load("pygame/images/Depression_advices/Depression_advices_normal.png").convert_alpha(),
+            "Mild": pygame.image.load("pygame/images/Depression_advices/Depression_advices_mild.png").convert_alpha(),
+            "Moderate": pygame.image.load("pygame/images/Depression_advices/Depression_advices_moderate.png").convert_alpha(),
+            "Severe": pygame.image.load("pygame/images/Depression_advices/Depression_advices_severe.png").convert_alpha(),
+            "Extremely Severe": pygame.image.load("pygame/images/Depression_advices/Depression_advices_extremely-severe.png").convert_alpha()
         },
         "Anxiety": {
-            "Normal": pygame.image.load("pygame/images/Anxiety_results/Anxiety_results_normal.png").convert_alpha(),
-            "Mild": pygame.image.load("pygame/images/Anxiety_results/Anxiety_results_mild.png").convert_alpha(),
-            "Moderate": pygame.image.load("pygame/images/Anxiety_results/Anxiety_results_moderate.png").convert_alpha(),
-            "Severe": pygame.image.load("pygame/images/Anxiety_results/Anxiety_results_severe.png").convert_alpha(),
-            "Extremely Severe": pygame.image.load("pygame/images/Anxiety_results/Anxiety_results_extremely-servere.png").convert_alpha()
+            "Normal": pygame.image.load("pygame/images/Anxiety_advices/Anxiety_advices_normal.png").convert_alpha(),
+            "Mild": pygame.image.load("pygame/images/Anxiety_advices/Anxiety_advices_mild.png").convert_alpha(),
+            "Moderate": pygame.image.load("pygame/images/Anxiety_advices/Anxiety_advices_moderate.png").convert_alpha(),
+            "Severe": pygame.image.load("pygame/images/Anxiety_advices/Anxiety_advices_severe.png").convert_alpha(),
+            "Extremely Severe": pygame.image.load("pygame/images/Anxiety_advices/Anxiety_advices_extremly-severe.png").convert_alpha()
         },
         "Stress": {
-            "Normal": pygame.image.load("pygame/images/Stress_results/Stress_results_normal.png").convert_alpha(),
-            "Mild": pygame.image.load("pygame/images/Stress_results/Stress_results_mild.png").convert_alpha(),
-            "Moderate": pygame.image.load("pygame/images/Stress_results/Stress_results_moderate.png").convert_alpha(),
-            "Severe": pygame.image.load("pygame/images/Stress_results/Stress_results_severe.png").convert_alpha(),
-            "Extremely Severe": pygame.image.load("pygame/images/Stress_results/Stress_results_extremely-severe.png").convert_alpha()
+            "Normal": pygame.image.load("pygame/images/Stress_advices/Stress_advices_normal.png").convert_alpha(),
+            "Mild": pygame.image.load("pygame/images/Stress_advices/Stress_advices_mild.png").convert_alpha(),
+            "Moderate": pygame.image.load("pygame/images/Stress_advices/Stress_advices_moderate.png").convert_alpha(),
+            "Severe": pygame.image.load("pygame/images/Stress_advices/Stress_advices_severe.png").convert_alpha(),
+            "Extremely Severe": pygame.image.load("pygame/images/Stress_advices/Stress_advices_extremely-severe.png").convert_alpha()
         }
     }
     return advice
