@@ -105,9 +105,11 @@ def get_depression_score(responses, version):
         depression_score = sum([responses[i-1] for i in depression_indices]) 
         return depression_score
 
-def make_radar_chart(screen,depression_score, anxiety_score, stress_score):
+def make_radar_chart(screen,scores,font):
     # Define markers and attribute labels for the triangular radar chart
-    name= "results"
+    name= ""
+    depression_score, anxiety_score, stress_score = scores
+
      # Define markers and attribute labels for the triangular radar chart
     markers = [1, 2, 3, 4, 5]
     attribute_labels = ["Normal", "Mild", "Moderate", "Severe", "Extremely Severe"]
@@ -132,8 +134,8 @@ def make_radar_chart(screen,depression_score, anxiety_score, stress_score):
     # Calculate points for the radar chart
     points = []
     for angle, stat in zip(angles, stats):
-        x = 250 * stat * np.cos(angle) + 300
-        y = 250 * stat * np.sin(angle) + 300
+        x = 100 * stat * np.cos(angle) + 200
+        y = 150 * stat * np.sin(angle) + 300
         points.append((x, y))
     
     # Draw the radar chart lines
@@ -662,7 +664,7 @@ def main():
             textString = "Graph Results"
             headle_text = font3.render(textString, True, (0, 0, 0))
             screen.blit(headle_text, (190, 90))
-
+            depression_score, anxiety_score, stress_score = scores
             make_radar_chart(screen, scores, font)
 
             if back_intro_button.draw(screen):
