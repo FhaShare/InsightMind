@@ -103,42 +103,42 @@ def print_scores(scores, version):
     print(f"Anxiety: {anxiety_score} ({interpret_scores(anxiety_score, 'Anxiety')})")
     print(f"Stress: {stress_score} ({interpret_scores(stress_score, 'Stress')})")
 
-def make_radar_chart(name, depression_score, anxiety_score, stress_score):
-    # Define markers and attribute labels for the triangular radar chart
-    markers = [1, 2, 3, 4, 5]
-    attribute_labels = ["Normal", "Mild", "Moderate", "Severe", "Extremely Severe"]
-    labels = np.array(attribute_labels)
+# def make_radar_chart(name, depression_score, anxiety_score, stress_score):
+#     # Define markers and attribute labels for the triangular radar chart
+#     markers = [1, 2, 3, 4, 5]
+#     attribute_labels = ["Normal", "Mild", "Moderate", "Severe", "Extremely Severe"]
+#     labels = np.array(attribute_labels)
     
-    # Define angles for the triangular radar chart
-    angles = [0, np.pi/2, 2 * np.pi/2]
+#     # Define angles for the triangular radar chart
+#     angles = [0, np.pi/2, 2 * np.pi/2]
     
-    # Normalize scores to range [0, 1]
-    depression_norm = depression_score / max(markers)
-    anxiety_norm = anxiety_score / max(markers)
-    stress_norm = stress_score / max(markers)
+#     # Normalize scores to range [0, 1]
+#     depression_norm = depression_score / max(markers)
+#     anxiety_norm = anxiety_score / max(markers)
+#     stress_norm = stress_score / max(markers)
     
-    # Create triangular radar chart data
-    stats = [depression_norm, anxiety_norm, stress_norm, depression_norm]  # Close the triangular shape
+#     # Create triangular radar chart data
+#     stats = [depression_norm, anxiety_norm, stress_norm, depression_norm]  # Close the triangular shape
     
-    # Plot the triangular radar chart
-    fig = plt.figure()
-    ax = fig.add_subplot(111, polar=True)
-    ax.plot(angles, stats[:3], 'o-', linewidth=2)  # Plot the first three points
-    ax.plot([angles[0], angles[2]], [stats[0], stats[2]], 'o-', linewidth=2)  # Connect the first and last points
-    ax.fill(angles, stats[:3], alpha=0.25)  # Fill the area
+#     # Plot the triangular radar chart
+#     fig = plt.figure()
+#     ax = fig.add_subplot(111, polar=True)
+#     ax.plot(angles, stats[:3], 'o-', linewidth=2)  # Plot the first three points
+#     ax.plot([angles[0], angles[2]], [stats[0], stats[2]], 'o-', linewidth=2)  # Connect the first and last points
+#     ax.fill(angles, stats[:3], alpha=0.25)  # Fill the area
     
-    # Set axis labels and markers
-    ax.set_thetagrids([angle * 180 / np.pi for angle in angles], ["Depression", "Anxiety", "Stress"])
+#     # Set axis labels and markers
+#     ax.set_thetagrids([angle * 180 / np.pi for angle in angles], ["Depression", "Anxiety", "Stress"])
     
-    plt.yticks(markers, labels)
+#     plt.yticks(markers, labels)
     
-    # Set title and grid
-    ax.set_title(name)
-    ax.grid(True)
+#     # Set title and grid
+#     ax.set_title(name)
+#     ax.grid(True)
     
-    # Save and show the plot
-    fig.savefig("static/images/%s.png" % name)
-    plt.show()
+#     # Save and show the plot
+#     fig.savefig("static/images/%s.png" % name)
+#     plt.show()
 
 
 def main():
@@ -147,9 +147,7 @@ def main():
     responses = display_questions_and_collect_responses(questions_list)
     scores = calculate_dass_scores(responses, version)
     print_scores(scores, version)
-    depression_score, anxiety_score, stress_score = calculate_dass_scores(responses, version)
-    make_radar_chart("Results",depression_score, anxiety_score, stress_score)
-    
+   
     print("\nPlease remember, this tool is not a diagnostic tool. If you are concerned about your mental health, please seek professional advice.")
 
 if __name__ == "__main__":
