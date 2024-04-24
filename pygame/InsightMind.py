@@ -101,28 +101,54 @@ def display_icons(screen, scores, icons):
 def load_result():
     result = {
         "Depression": {
-            "Normal": pygame.image.load("pygame/images/Depression/Depression_Normal.png").convert_alpha(),
-            "Mild": pygame.image.load("pygame/images/Depression/Depression_Mild.png").convert_alpha(),
-            "Moderate": pygame.image.load("pygame/images/Depression/Depression_Moderate.png").convert_alpha(),
-            "Severe": pygame.image.load("pygame/images/Depression/Depression_Severe.png").convert_alpha(),
-            "Extremely Severe": pygame.image.load("pygame/images/Depression/Depression_ExtremelySevere.png").convert_alpha()
+            "Normal": pygame.image.load("pygame/images/Depression_results/Depression_results_normal.png").convert_alpha(),
+            "Mild": pygame.image.load("pygame/images/Depression_results/Depression_results_mild.png").convert_alpha(),
+            "Moderate": pygame.image.load("pygame/images/Depression_results/Depression_results_moderate.png").convert_alpha(),
+            "Severe": pygame.image.load("pygame/images/Depression_results/Depression_results_severe.png").convert_alpha(),
+            "Extremely Severe": pygame.image.load("pygame/images/Depression_results/Depression_results_extremely-severe.png").convert_alpha()
         },
         "Anxiety": {
-            "Normal": pygame.image.load("pygame/images/Anxiety/Anxiety_Normal.png").convert_alpha(),
-            "Mild": pygame.image.load("pygame/images/Anxiety/Anxiety_Mild.png").convert_alpha(),
-            "Moderate": pygame.image.load("pygame/images/Anxiety/Anxiety_Moderate.png").convert_alpha(),
-            "Severe": pygame.image.load("pygame/images/Anxiety/Anxiety_Severe.png").convert_alpha(),
-            "Extremely Severe": pygame.image.load("pygame/images/Anxiety/Anxiety_ExtremelySevere.png").convert_alpha()
+            "Normal": pygame.image.load("pygame/images/Anxiety_results/Anxiety_results_normal.png").convert_alpha(),
+            "Mild": pygame.image.load("pygame/images/Anxiety_results/Anxiety_results_mild.png").convert_alpha(),
+            "Moderate": pygame.image.load("pygame/images/Anxiety_results/Anxiety_results_moderate.png").convert_alpha(),
+            "Severe": pygame.image.load("pygame/images/Anxiety_results/Anxiety_results_severe.png").convert_alpha(),
+            "Extremely Severe": pygame.image.load("pygame/images/Anxiety_results/Anxiety_results_extremely-servere.png").convert_alpha()
         },
         "Stress": {
-            "Normal": pygame.image.load("pygame/images/Stress/Stress_Normal.png").convert_alpha(),
-            "Mild": pygame.image.load("pygame/images/Stress/Stress_Mild.png").convert_alpha(),
-            "Moderate": pygame.image.load("pygame/images/Stress/Stress_Moderate.png").convert_alpha(),
-            "Severe": pygame.image.load("pygame/images/Stress/Stress_Severe.png").convert_alpha(),
-            "Extremely Severe": pygame.image.load("pygame/images/Stress/Stress_ExtremelySevere.png").convert_alpha()
+            "Normal": pygame.image.load("pygame/images/Stress_results/Stress_results_normal.png").convert_alpha(),
+            "Mild": pygame.image.load("pygame/images/Stress_results/Stress_results_mild.png").convert_alpha(),
+            "Moderate": pygame.image.load("pygame/images/Stress_results/Stress_results_moderate.png").convert_alpha(),
+            "Severe": pygame.image.load("pygame/images/Stress_results/Stress_results_severe.png").convert_alpha(),
+            "Extremely Severe": pygame.image.load("pygame/images/Stress_results/Stress_results_extremely-severe.png").convert_alpha()
         }
     }
     return result
+
+def load_advice():
+    advice = {
+        "Depression": {
+            "Normal": pygame.image.load("pygame/images/Depression_results/Depression_results_normal.png").convert_alpha(),
+            "Mild": pygame.image.load("pygame/images/Depression_results/Depression_results_mild.png").convert_alpha(),
+            "Moderate": pygame.image.load("pygame/images/Depression_results/Depression_results_moderate.png").convert_alpha(),
+            "Severe": pygame.image.load("pygame/images/Depression_results/Depression_results_severe.png").convert_alpha(),
+            "Extremely Severe": pygame.image.load("pygame/images/Depression_results/Depression_results_extremely-severe.png").convert_alpha()
+        },
+        "Anxiety": {
+            "Normal": pygame.image.load("pygame/images/Anxiety_results/Anxiety_results_normal.png").convert_alpha(),
+            "Mild": pygame.image.load("pygame/images/Anxiety_results/Anxiety_results_mild.png").convert_alpha(),
+            "Moderate": pygame.image.load("pygame/images/Anxiety_results/Anxiety_results_moderate.png").convert_alpha(),
+            "Severe": pygame.image.load("pygame/images/Anxiety_results/Anxiety_results_severe.png").convert_alpha(),
+            "Extremely Severe": pygame.image.load("pygame/images/Anxiety_results/Anxiety_results_extremely-servere.png").convert_alpha()
+        },
+        "Stress": {
+            "Normal": pygame.image.load("pygame/images/Stress_results/Stress_results_normal.png").convert_alpha(),
+            "Mild": pygame.image.load("pygame/images/Stress_results/Stress_results_mild.png").convert_alpha(),
+            "Moderate": pygame.image.load("pygame/images/Stress_results/Stress_results_moderate.png").convert_alpha(),
+            "Severe": pygame.image.load("pygame/images/Stress_results/Stress_results_severe.png").convert_alpha(),
+            "Extremely Severe": pygame.image.load("pygame/images/Stress_results/Stress_results_extremely-severe.png").convert_alpha()
+        }
+    }
+    return advice
 
 def display_result(screen, scores, result):
     depression_score, anxiety_score, stress_score = scores
@@ -217,7 +243,7 @@ def main():
     pygame.font.init()  # Initialize the font module
     font = pygame.font.Font(None, 36)  # Global font object
     font2 = pygame.font.Font("pygame/font/LoveDays-2v7Oe.ttf",22)
-    font3 = pygame.font.Font("pygame/font/LoveDays-2v7Oe.ttf",25)
+    font3 = pygame.font.Font("pygame/font/LoveDays-2v7Oe.ttf",28)
 
 
     pygame.display.set_caption("InsightMind")
@@ -253,10 +279,10 @@ def main():
     main_button = buttons.Button(65, 474.8, mainButton_img, 1)
         # Button for navigating pages
     back_img = pygame.image.load("pygame/images/back.png").convert_alpha()
-    back_intro_button = buttons.Button(300, 880, back_img, 1)
+    back_intro_button = buttons.Button(350, 880, back_img, 1)
     back_button = buttons.Button(200, 850, back_img, 1)
     next_img = pygame.image.load("pygame/images/next.png").convert_alpha()
-    next_intro_button = buttons.Button(400, 880, next_img, 1)
+    next_intro_button = buttons.Button(430, 880, next_img, 1)
     next_button = buttons.Button(279, 850, next_img, 1)
     start_img = pygame.image.load("pygame/images/start_80px.png").convert_alpha()
     start_button = buttons.Button(206.3, 760, start_img, 1)
@@ -276,6 +302,8 @@ def main():
     respones3_button = buttons.Button(124, 720, respones3_img, 1)
 
     icons = load_icons()
+    result = load_result()
+    advice = load_advice()
    
     # DASS21 pages
     dass21List = load_questionnaire_images("pygame/images/Dass21_questionnaires", "dass21", 21)
@@ -528,9 +556,11 @@ def main():
             textString = "Here are your results"
             headle_text = font3.render(textString, True, (0, 0, 0))
             screen.blit(headle_text, (130, 90))
+
+            scores = calculate_dass_scores(responses, version)
+            display_result(screen, scores, result)
+
             if not results_printed:
-                scores = calculate_dass_scores(responses, version)
-                display_icons(screen, scores, icons)
                 print_scores(screen, scores, version, font, icons)     
                 print(responses)   
                 debug_print_scores(scores, version)
@@ -547,6 +577,8 @@ def main():
             textString = "General Advice"
             headle_text = font3.render(textString, True, (0, 0, 0))
             screen.blit(headle_text, (180, 90))
+
+            display_result(screen, scores, advice)
             if back_intro_button.draw(screen):
                 print("Back Button clicked")
                 current_page = 7  # Move back to results page
@@ -561,7 +593,7 @@ def main():
             screen.blit(graph_page, (0, 0))
             textString = "Graph Results"
             headle_text = font3.render(textString, True, (0, 0, 0))
-            screen.blit(headle_text, (200, 90))
+            screen.blit(headle_text, (190, 90))
             if back_intro_button.draw(screen):
                 print("Back Button clicked")
                 current_page = 8  # Move back to advice page
