@@ -56,6 +56,108 @@ def interpret_scores(score, category):
         if score <= cutoff:
             return labels[i]
     return labels[-1]
+def get_stress_score(responses, version):
+     if version == 'DASS-21':
+        # Indices for DASS-21
+     
+        stress_indices = [1, 6, 8, 11, 12, 14, 18]
+
+        stress_score = sum([responses[i-1] for i in stress_indices]) * 2
+        return stress_score
+     elif version == 'DASS-42':
+        # Indices for DASS-42 provided by the template
+     
+        stress_indices = [1, 6, 8, 11, 12, 14, 18, 22, 27, 29, 32, 33, 35, 39]
+        stress_score = sum([responses[i-1] for i in stress_indices])
+        return stress_score
+def get_anxiety_score(responses, version):
+    if version == 'DASS-21':
+        # Indices for DASS-21
+        
+        anxiety_indices = [2, 4, 7, 9, 15, 19, 20]
+       
+
+        
+        anxiety_score = sum([responses[i-1] for i in anxiety_indices]) * 2
+        return anxiety_score
+    elif version == 'DASS-42':
+        # Indices for DASS-42 provided by the template
+        
+        anxiety_indices = [2, 4, 7, 9, 15, 19, 20, 23, 25, 28, 30, 36, 40, 41]
+        
+
+         
+        anxiety_score = sum([responses[i-1] for i in anxiety_indices])
+        return anxiety_score
+def get_depression_score(responses, version):
+    if version == 'DASS-21':
+        # Indices for DASS-21
+        depression_indices = [3, 5, 10, 13, 16, 17, 21]
+        
+
+        depression_score = sum([responses[i-1] for i in depression_indices]) * 2 
+        return depression_score
+    elif version == 'DASS-42':
+        # Indices for DASS-42 provided by the template
+        depression_indices = [3, 5, 10, 13, 16, 17, 21, 24, 26, 31, 34, 37, 38, 42]
+       
+
+        depression_score = sum([responses[i-1] for i in depression_indices]) 
+        return depression_score
+
+def make_radar_chart(screen,depression_score, anxiety_score, stress_score):
+    # Define markers and attribute labels for the triangular radar chart
+    name= "results"
+     # Define markers and attribute labels for the triangular radar chart
+    markers = [1, 2, 3, 4, 5]
+    attribute_labels = ["Normal", "Mild", "Moderate", "Severe", "Extremely Severe"]
+    labels = np.array(attribute_labels)
+    
+    # Define angles for the triangular radar chart
+    angles = [0, np.pi/2, 2 * np.pi/2]
+    
+    # Normalize scores to range [0, 1]
+    depression_norm = depression_score / max(markers)
+    anxiety_norm = anxiety_score / max(markers)
+    stress_norm = stress_score / max(markers)
+    
+    # Create triangular radar chart data
+    stats = [depression_norm, anxiety_norm, stress_norm, depression_norm]  # Close the triangular shape
+    
+    # Plot the triangular radar chart
+    color = (255, 255, 255)  # White color for lines and area fill
+    thickness = 2
+    alpha = 128  # Transparency for the area fill
+    
+    # Calculate points for the radar chart
+    points = []
+    for angle, stat in zip(angles, stats):
+        x = 250 * stat * np.cos(angle) + 300
+        y = 250 * stat * np.sin(angle) + 300
+        points.append((x, y))
+    
+    # Draw the radar chart lines
+    for i in range(len(points) - 1):
+        pygame.draw.line(screen, color, points[i], points[i+1], thickness)
+    pygame.draw.line(screen, color, points[-1], points[0], thickness)
+    
+    # Fill the area of the radar chart
+    pygame.draw.polygon(screen, (color[0], color[1], color[2], alpha), points)
+    
+    # Set axis labels and markers
+    font = pygame.font.SysFont(None, 24)
+    for angle, label in zip(angles, ["Depression", "Anxiety", "Stress"]):
+        text = font.render(label, True, color)
+        text_rect = text.get_rect(center=(300 + 250 * np.cos(angle), 300 + 250 * np.sin(angle)))
+        screen.blit(text, text_rect)
+    
+    # Set title
+    title_font = pygame.font.SysFont(None, 36)
+    title_text = title_font.render(name, True, color)
+    screen.blit(title_text, (250, 30))
+    
+    # Update the display
+    pygame.display.flip()
 
 def load_icons():
     icons = {
@@ -561,7 +663,7 @@ def main():
             headle_text = font3.render(textString, True, (0, 0, 0))
             screen.blit(headle_text, (190, 90))
 
-            # make_radar_chart(screen, name, scores, font):
+            make_radar_chart(screen, scores, font)
 
             if back_intro_button.draw(screen):
                 print("Back Button clicked")
