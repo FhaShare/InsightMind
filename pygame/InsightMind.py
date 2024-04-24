@@ -216,8 +216,8 @@ def main():
     screen = pygame.display.set_mode((534, 950))
     pygame.font.init()  # Initialize the font module
     font = pygame.font.Font(None, 36)  # Global font object
-    font2 = pygame.font.Font("pygame/font/LoveDays-2v7Oe.ttf",25)
-    font3 = pygame.font.Font("pygame/font/LoveDays-2v7Oe.ttf",30)
+    font2 = pygame.font.Font("pygame/font/LoveDays-2v7Oe.ttf",22)
+    font3 = pygame.font.Font("pygame/font/LoveDays-2v7Oe.ttf",25)
 
 
     pygame.display.set_caption("InsightMind")
@@ -239,9 +239,10 @@ def main():
         # Page7: questionnaire (Use None for dynamic content page)
         # Page8: Result
     result_page = pygame.image.load('pygame/images/result.png').convert()
+        # Page9: Advice
     advice_page = pygame.image.load('pygame/images/advice.png').convert()
+        # Page10: graph
     graph_page = pygame.image.load('pygame/images/graph.png').convert()
-    #graph_page = pyame....
         # List of pages 
     pages = [main_menu, intro_page1, intro_page2, dass_menu, dass21_intro, dass42_intro, result_page, advice_page, graph_page]
     
@@ -360,6 +361,12 @@ def main():
                 if not question_printed:
                     print(f"Displaying Question {current_question_index + 1}/{len(dass21List)}")
                     question_printed = True
+                pass
+            else:
+                if not results_printed:
+                    current_page = 7  # Transition to results page
+                    results_printed = True
+                    print("Transitioning to results page.")
             
             if respones0_button.draw(screen):
                 dass21_responses[current_question_index] = 0
@@ -421,7 +428,7 @@ def main():
                     else:
                         questionnaire_finished = True
             if show_error_message and error_message:
-                screen.blit(error_message, (55, 250))
+                screen.blit(error_message, (45, 250))
 
         elif current_page == 5:
             screen.blit(dass42_intro, (0, 0))
@@ -438,6 +445,12 @@ def main():
                 if not question_printed:
                     print(f"Displaying Question {current_question_index + 1}/{len(dass42List)}")
                     question_printed = True
+                pass
+            else:
+                if not results_printed:
+                    current_page = 7  # Transition to results page
+                    results_printed = True
+                    print("Transitioning to results page.")
                 
             if respones0_button.draw(screen):
                 dass42_responses[current_question_index] = 0
@@ -499,45 +512,70 @@ def main():
                     else:
                         questionnaire_finished = True
             if show_error_message and error_message:
-                screen.blit(error_message, (55, 250))
+                screen.blit(error_message, (45, 250))
 
-        if questionnaire_finished:
-            screen.blit(result_page, (0, 0))         
-
-            # Display a static text on the result screen
+        if questionnaire_finished and current_page == 7:
+            screen.blit(result_page, (0, 0))  
+            # Display a text on the result screen
             textString = "Here are your results"
             headle_text = font3.render(textString, True, (0, 0, 0))
-            screen.blit(headle_text, (130, 100))
+            screen.blit(headle_text, (130, 900))
             scores = calculate_dass_scores(responses, version)
             # make_radar_chart(screen, "DASS Results", scores, font)
             display_icons(screen, scores, icons)
-            print_scores(screen, scores, version, font, icons)
-            
-        
+            print_scores(screen, scores, version, font, icons)     
+
             if not results_printed:
-                # Calculate and display the scores
                 print(responses)   
                 debug_print_scores(scores, version)  # Optionally print scores to console for debugging
                 results_printed = True
 
             if next_intro_button.draw(screen):
                 print("Next Button clicked")  # Debug print
-                current_page += 1  # Move for to the previous pages
+                current_page = 8  # Navigate to advice page
+                print("Navigating to advice page.")
         
-        if current_page == 8 and questionnaire_finished: 
+        elif current_page == 8: 
             screen.blit(advice_page, (0, 0))
+            # Display a text on the result screen
+            textString = "General Advice"
+            headle_text = font3.render(textString, True, (0, 0, 0))
+            screen.blit(headle_text, (130, 90))
+            if not results_printed:
+                scores = calculate_dass_scores(responses, version)
+                # make_radar_chart(screen, "DASS Results", scores, font)
+                display_icons(screen, scores, icons)
+                print_scores(screen, scores, version, font, icons)
+                print(responses)   
+                debug_print_scores(scores, version)  # Optionally print scores to console for debugging
+                results_printed = True
+
             if back_intro_button.draw(screen):
                 print("Back Button clicked")  # Debug print
-                current_page -= 1  # Move back to the previous pages
+                current_page = 7  # Move back to the previous pages
             if next_intro_button.draw(screen):
                 print("Next Button clicked")  # Debug print
-                current_page += 1  # Move for to the previous pages
+                current_page = 9  # Move for to the previous pages
+                print("Navigating to graph page.")
 
-                # advice_page, graph_page
-            
+        elif current_page == 8: 
+            screen.blit(graph_page, (0, 0))
+            # Display a text on the result screen
+            textString = "Graph result"
+            headle_text = font3.render(textString, True, (0, 0, 0))
+            screen.blit(headle_text, (130, 90))
+            if not results_printed:
+                scores = calculate_dass_scores(responses, version)
+                # make_radar_chart(screen, "DASS Results", scores, font)
+                display_icons(screen, scores, icons)
+                print_scores(screen, scores, version, font, icons)
+                print(responses)   
+                debug_print_scores(scores, version)  # Optionally print scores to console for debugging
+                results_printed = True
 
-            
-
+            if back_intro_button.draw(screen):
+                print("Back Button clicked")  # Debug print
+                current_page = 8  # Move back to the previous pages
 
             
         for event in pygame.event.get():
