@@ -103,19 +103,66 @@ def print_scores(scores, version):
     print(f"Anxiety: {anxiety_score} ({interpret_scores(anxiety_score, 'Anxiety')})")
     print(f"Stress: {stress_score} ({interpret_scores(stress_score, 'Stress')})")
 
+def get_stress_score(responses, version):
+     if version == 'DASS-21':
+        # Indices for DASS-21
+     
+        stress_indices = [1, 6, 8, 11, 12, 14, 18]
+
+        stress_score = sum([responses[i-1] for i in stress_indices]) * 2
+        return stress_score
+     elif version == 'DASS-42':
+        # Indices for DASS-42 provided by the template
+     
+        stress_indices = [1, 6, 8, 11, 12, 14, 18, 22, 27, 29, 32, 33, 35, 39]
+        stress_score = sum([responses[i-1] for i in stress_indices])
+        return stress_score
+def get_anxiety_score(responses, version):
+    if version == 'DASS-21':
+        # Indices for DASS-21
+        
+        anxiety_indices = [2, 4, 7, 9, 15, 19, 20]
+       
+
+        
+        anxiety_score = sum([responses[i-1] for i in anxiety_indices]) * 2
+        return anxiety_score
+    elif version == 'DASS-42':
+        # Indices for DASS-42 provided by the template
+        
+        anxiety_indices = [2, 4, 7, 9, 15, 19, 20, 23, 25, 28, 30, 36, 40, 41]
+        
+
+         
+        anxiety_score = sum([responses[i-1] for i in anxiety_indices])
+        return anxiety_score
+def get_depression_score(responses, version):
+    if version == 'DASS-21':
+        # Indices for DASS-21
+        depression_indices = [3, 5, 10, 13, 16, 17, 21]
+        
+
+        depression_score = sum([responses[i-1] for i in depression_indices]) * 2 
+        return depression_score
+    elif version == 'DASS-42':
+        # Indices for DASS-42 provided by the template
+        depression_indices = [3, 5, 10, 13, 16, 17, 21, 24, 26, 31, 34, 37, 38, 42]
+       
+
+        depression_score = sum([responses[i-1] for i in depression_indices]) 
+        return depression_score
+
 def make_radar_chart(name, depression_score, anxiety_score, stress_score):
     # Define markers and attribute labels for the triangular radar chart
     markers = [1, 2, 3, 4, 5]
     attribute_labels = ["Normal", "Mild", "Moderate", "Severe", "Extremely Severe"]
     labels = np.array(attribute_labels)
-    
-    # Define angles for the triangular radar chart
-    angles = [0, np.pi/2, 2 * np.pi/2]
-    
+
     # Normalize scores to range [0, 1]
-    depression_norm = depression_score / max(markers)
-    anxiety_norm = anxiety_score / max(markers)
-    stress_norm = stress_score / max(markers)
+    max_score = max(depression_score, anxiety_score, stress_score)
+    depression_norm = depression_score / max_score
+    anxiety_norm = anxiety_score / max_score
+    stress_norm = stress_score / max_score
     
     # Create triangular radar chart data
     stats = [depression_norm, anxiety_norm, stress_norm, depression_norm]  # Close the triangular shape
@@ -123,13 +170,13 @@ def make_radar_chart(name, depression_score, anxiety_score, stress_score):
     # Plot the triangular radar chart
     fig = plt.figure()
     ax = fig.add_subplot(111, polar=True)
+    angles = [0, np.pi/2, 2 * np.pi/2]
     ax.plot(angles, stats[:3], 'o-', linewidth=2)  # Plot the first three points
     ax.plot([angles[0], angles[2]], [stats[0], stats[2]], 'o-', linewidth=2)  # Connect the first and last points
     ax.fill(angles, stats[:3], alpha=0.25)  # Fill the area
     
     # Set axis labels and markers
     ax.set_thetagrids([angle * 180 / np.pi for angle in angles], ["Depression", "Anxiety", "Stress"])
-    
     plt.yticks(markers, labels)
     
     # Set title and grid
@@ -140,7 +187,6 @@ def make_radar_chart(name, depression_score, anxiety_score, stress_score):
     fig.savefig("static/images/%s.png" % name)
     plt.show()
 
-
 def main():
     filename, version = main_menu()  # Collects the filename and version based on user input
     questions_list = read_file(filename)  # Reads the questions based on the chosen version
@@ -148,8 +194,7 @@ def main():
     scores = calculate_dass_scores(responses, version)
     print_scores(scores, version)
     depression_score, anxiety_score, stress_score = calculate_dass_scores(responses, version)
-    make_radar_chart("Results",depression_score, anxiety_score, stress_score)
-    
+    make_radar_chart("Results", *scores)
     print("\nPlease remember, this tool is not a diagnostic tool. If you are concerned about your mental health, please seek professional advice.")
 
 if __name__ == "__main__":

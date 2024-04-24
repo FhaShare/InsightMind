@@ -127,7 +127,7 @@ def make_radar_chart(screen,scores,font):
     stats = [depression_norm, anxiety_norm, stress_norm, depression_norm]  # Close the triangular shape
     
     # Plot the triangular radar chart
-    color = (255, 255, 255)  # White color for lines and area fill
+    color = (0, 0, 0)  # White color for lines and area fill
     thickness = 2
     alpha = 128  # Transparency for the area fill
     
