@@ -237,7 +237,7 @@ def main():
         # Page10: graph
     graph_page = pygame.image.load('pygame/images/graph.png').convert()
         # List of pages 
-    pages = [main_menu, intro_page1, intro_page2, dass_menu, dass21_intro, dass42_intro, questionnaire_page, result_page, advice_page, graph_page]
+    pages = [main_menu, intro_page1, intro_page2, dass_menu, dass21_intro, dass42_intro, questionnaire_page, result_page, advice_page]
     
     # Initialize buttons
         # Button on MainMenu page
@@ -548,24 +548,24 @@ def main():
             if back_intro_button.draw(screen):
                 print("Back Button clicked")
                 current_page = 7  # Move back to results page
-            if next_intro_button.draw(screen):
-                print("Next Button clicked")
-                current_page = 9  # Navigate to graph page
-                print("Navigating to graph page.")
+            # if next_intro_button.draw(screen):
+            #     print("Next Button clicked")
+            #     current_page = 9  # Navigate to graph page
+            #     print("Navigating to graph page.")
             
 
-        # Handling the graph results page
-        elif current_page == 9: 
-            screen.blit(graph_page, (0, 0))
-            textString = "Graph Results"
-            headle_text = font3.render(textString, True, (0, 0, 0))
-            screen.blit(headle_text, (190, 90))
+        # # Handling the graph results page
+        # elif current_page == 9: 
+        #     screen.blit(graph_page, (0, 0))
+        #     textString = "Graph Results"
+        #     headle_text = font3.render(textString, True, (0, 0, 0))
+        #     screen.blit(headle_text, (190, 90))
 
-            # make_radar_chart(screen, name, scores, font):
+        #     # make_radar_chart(screen, name, scores, font):
 
-            if back_intro_button.draw(screen):
-                print("Back Button clicked")
-                current_page = 8  # Move back to advice page
+        #     if back_intro_button.draw(screen):
+        #         print("Back Button clicked")
+        #         current_page = 8  # Move back to advice page
 
             
         for event in pygame.event.get():
