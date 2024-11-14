@@ -1,6 +1,7 @@
+##Author: Fhaungfha Suvannakajorn 
+
 import pygame
 import buttons
-import matplotlib.pyplot as plt 
 import numpy as np 
 
 def load_questionnaire_images(base_path, prefix, count):
