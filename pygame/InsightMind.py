@@ -1,4 +1,4 @@
-##Author: Fhaungfha Suvannakajorn 
+##Author: Fhaungfha Suvannakajorn and Pipatporn Chaluthong
 
 import pygame
 import buttons
@@ -16,10 +16,6 @@ def load_questionnaire_images(base_path, prefix, count):
 
 def handle_questionnaire(screen, current_question_index, responses, dass42List):
     # Handle questionnaire interactions (similar to your existing logic)
-    pass
-
-def display_results(screen, responses, font):
-    # Calculate scores and display results
     pass
 
 def calculate_dass_scores(responses, version):
