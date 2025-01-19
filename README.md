@@ -1,6 +1,8 @@
 # InsightMind
   Team Members: Pipatporn Chaluthong, Teenie Flood, Fhaungfha Suvannakajorn
+  
   Course: CSIT 200-01 Python at Raritan Valley Community College, Spring 2024
+  
   Professor: Linda Yang
 
 ## Project Vision
