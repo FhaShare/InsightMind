@@ -56,6 +56,7 @@ def interpret_scores(score, category):
         if score <= cutoff:
             return labels[i]
     return labels[-1]
+
 def get_stress_score(responses, version):
      if version == 'DASS-21':
         # Indices for DASS-21
@@ -70,6 +71,7 @@ def get_stress_score(responses, version):
         stress_indices = [1, 6, 8, 11, 12, 14, 18, 22, 27, 29, 32, 33, 35, 39]
         stress_score = sum([responses[i-1] for i in stress_indices])
         return stress_score
+     
 def get_anxiety_score(responses, version):
     if version == 'DASS-21':
         # Indices for DASS-21
