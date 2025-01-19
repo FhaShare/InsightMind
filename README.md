@@ -1,7 +1,7 @@
 # InsightMind
-Team Members: Pipatporn Chaluthong, Teenie Flood, Fhaungfha Suvannakajorn
-Course: CSIT 200-01 Python at Raritan Valley Community College, Spring 2024
-Professor: Linda Yang
+  Team Members: Pipatporn Chaluthong, Teenie Flood, Fhaungfha Suvannakajorn
+  Course: CSIT 200-01 Python at Raritan Valley Community College, Spring 2024
+  Professor: Linda Yang
 
 ## Project Vision
 InsightMind is an interactive application designed to promote mental health awareness and self-assessment. This educational project leverages the DASS-21 and DASS-42 questionnaires to evaluate levels of Depression, Anxiety, and Stress. Through a user-friendly graphical interface and intuitive result visualization, the project aims to empower users with insights into their mental well-being.
