@@ -2,7 +2,6 @@
 
 import pygame
 import buttons
-import numpy as np 
 
 def load_questionnaire_images(base_path, prefix, count):
     images = []
